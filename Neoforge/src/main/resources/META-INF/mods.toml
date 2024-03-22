@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="[2,)"
+license="CC BY-NC-ND 4.0"
+showAsResourcePack=false
+
+[[mods]]
+    modId="whatdidijustkill"
+    version="${version}"
+    displayName="What Did I Just Kill?"
+    displayURL="https://github.com/tristankechlo/WhatDidIJustKill"
+    #logoFile="banner.png"
+    authors="Buecher_wurm"
+    description='''displays a small toast with information about the mob you just killed'''
+
+[[mixins]]
+    config = "whatdidijustkill.mixins.json"
+
+[[dependencies.whatdidijustkill]]
+    modId="neoforge"
+    type="required"
+    versionRange = "[20.4,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.whatdidijustkill]]
+    modId="minecraft"
+    type="required"
+    versionRange="[1.20.4,1.21)"
+    ordering="NONE"
+    side="BOTH"

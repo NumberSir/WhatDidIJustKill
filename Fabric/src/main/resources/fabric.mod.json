@@ -1,0 +1,41 @@
+{
+    "schemaVersion": 1,
+    "id": "whatdidijustkill",
+    "version": "${version}",
+    "name": "What Did I Just Kill?",
+    "description": "displays a small toast with information about the mob you just killed",
+    "authors": [
+        "Buecher_wurm"
+    ],
+    "contact": {
+        "homepage": "https://www.curseforge.com/minecraft/mc-mods/what-did-i-just-kill",
+        "sources": "https://github.com/tristankechlo/WhatDidIJustKill",
+        "issues": "https://github.com/tristankechlo/WhatDidIJustKill/issues"
+    },
+    "license": "CC BY-NC-ND 4.0",
+    "icon": "icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "com.tristankechlo.whatdidijustkill.FabricWhatDidIJustKill"
+        ]
+    },
+    "mixins": [
+        "whatdidijustkill.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.15",
+        "fabric-api": "*",
+        "minecraft": ">=1.20.4",
+        "java": ">=17"
+    },
+    "custom": {
+        "modmenu": {
+            "links": {
+                "modmenu.discord": "https://discord.gg/bhUaWhq",
+                "modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/what-did-i-just-kill",
+                "modmenu.modrinth": "https://modrinth.com/mod/what-did-i-just-kill"
+            }
+        }
+    }
+}
