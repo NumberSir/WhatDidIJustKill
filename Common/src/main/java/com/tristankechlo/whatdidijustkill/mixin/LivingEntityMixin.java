@@ -1,6 +1,6 @@
 package com.tristankechlo.whatdidijustkill.mixin;
 
-import com.tristankechlo.whatdidijustkill.network.EntityKilledPacket;
+import com.tristankechlo.whatdidijustkill.network.ClientBoundPlayerKilledEntityPacket;
 import com.tristankechlo.whatdidijustkill.network.IPacketHandler;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -38,10 +38,10 @@ public abstract class LivingEntityMixin {
         if (causingEntity == null && directEntity == null) {
             LivingEntity killCredit = this.getKillCredit(); // the entity that got the kill credited
             if (killCredit instanceof ServerPlayer player) {
-                IPacketHandler.INSTANCE.sendPacketEntityKilled(player, new EntityKilledPacket(entityName, entityType));
+                IPacketHandler.INSTANCE.sendPacketEntityKilled(player, new ClientBoundPlayerKilledEntityPacket(entityName, entityType));
             }
         } else if (causingEntity instanceof ServerPlayer player) {
-            IPacketHandler.INSTANCE.sendPacketEntityKilled(player, new EntityKilledPacket(entityName, entityType));
+            IPacketHandler.INSTANCE.sendPacketEntityKilled(player, new ClientBoundPlayerKilledEntityPacket(entityName, entityType));
         }
     }
 

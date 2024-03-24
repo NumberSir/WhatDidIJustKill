@@ -6,14 +6,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
-public record NeoforgeEntityKilledPacket(EntityKilledPacket packet) implements CustomPacketPayload {
+public record NeoforgePlayerKilledEntityPacketWrapper(ClientBoundPlayerKilledEntityPacket packet) implements CustomPacketPayload {
 
-    public static NeoforgeEntityKilledPacket decode(FriendlyByteBuf buffer) {
+    public static NeoforgePlayerKilledEntityPacketWrapper decode(FriendlyByteBuf buffer) {
         // read data from packet
         Component entityName = buffer.readComponent();
         ResourceLocation entityType = buffer.readResourceLocation();
-        EntityKilledPacket packet = new EntityKilledPacket(entityName, entityType);
-        return new NeoforgeEntityKilledPacket(packet);
+        ClientBoundPlayerKilledEntityPacket packet = new ClientBoundPlayerKilledEntityPacket(entityName, entityType);
+        return new NeoforgePlayerKilledEntityPacketWrapper(packet);
     }
 
     @Override

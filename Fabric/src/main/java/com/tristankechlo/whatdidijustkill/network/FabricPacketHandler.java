@@ -17,17 +17,17 @@ public class FabricPacketHandler implements IPacketHandler {
     }
 
     @Override
-    public void sendPacketEntityKilled(ServerPlayer player, EntityKilledPacket packet) {
+    public void sendPacketEntityKilled(ServerPlayer player, ClientBoundPlayerKilledEntityPacket packet) {
         FriendlyByteBuf buffer = PacketByteBufs.create();
-        EntityKilledPacket.encode(packet, buffer);
+        ClientBoundPlayerKilledEntityPacket.encode(packet, buffer);
         ServerPlayNetworking.send(player, WhatDidIJustKill.CHANNEL, buffer);
     }
 
     private static void handle(Minecraft client, ClientPacketListener handler, FriendlyByteBuf buffer, PacketSender sender) {
-        EntityKilledPacket packet = EntityKilledPacket.decode(buffer);
+        ClientBoundPlayerKilledEntityPacket packet = ClientBoundPlayerKilledEntityPacket.decode(buffer);
         client.execute(() -> {
             // execute the handling on the client thread
-            EntityKilledPacket.handle(packet);
+            ClientBoundPlayerKilledEntityPacket.handle(packet);
         });
     }
 

@@ -20,23 +20,23 @@ public class ForgePacketHandler implements IPacketHandler {
             .simpleChannel();
 
     public static void registerPackets() {
-        INSTANCE.messageBuilder(EntityKilledPacket.class, 1, NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(EntityKilledPacket::decode)
-                .encoder(EntityKilledPacket::encode)
+        INSTANCE.messageBuilder(ClientBoundPlayerKilledEntityPacket.class, 1, NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ClientBoundPlayerKilledEntityPacket::decode)
+                .encoder(ClientBoundPlayerKilledEntityPacket::encode)
                 // handle packet execution directly on the main thread
                 .consumerMainThread(ForgePacketHandler::handle)
                 .add();
     }
 
     @Override
-    public void sendPacketEntityKilled(ServerPlayer player, EntityKilledPacket packet) {
+    public void sendPacketEntityKilled(ServerPlayer player, ClientBoundPlayerKilledEntityPacket packet) {
         INSTANCE.send(packet, PacketDistributor.PLAYER.with(player));
     }
 
-    private static void handle(EntityKilledPacket packet, CustomPayloadEvent.Context context) {
+    private static void handle(ClientBoundPlayerKilledEntityPacket packet, CustomPayloadEvent.Context context) {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             // handle packet only when on client main thread
-            EntityKilledPacket.handle(packet);
+            ClientBoundPlayerKilledEntityPacket.handle(packet);
         });
     }
 

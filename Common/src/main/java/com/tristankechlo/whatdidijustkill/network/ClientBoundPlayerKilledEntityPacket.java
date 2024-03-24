@@ -5,25 +5,25 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-public record EntityKilledPacket(Component entityName, ResourceLocation entityType) {
+public record ClientBoundPlayerKilledEntityPacket(Component entityName, ResourceLocation entityType) {
 
     /* decode for forge and fabric */
-    public static void encode(EntityKilledPacket packet, FriendlyByteBuf buffer) {
+    public static void encode(ClientBoundPlayerKilledEntityPacket packet, FriendlyByteBuf buffer) {
         // add data to packet here
         buffer.writeComponent(packet.entityName());
         buffer.writeResourceLocation(packet.entityType());
     }
 
     /* encode for forge and fabric */
-    public static EntityKilledPacket decode(FriendlyByteBuf buffer) {
+    public static ClientBoundPlayerKilledEntityPacket decode(FriendlyByteBuf buffer) {
         // read data from packet
         Component entityName = buffer.readComponent();
         ResourceLocation entityType = buffer.readResourceLocation();
-        return new EntityKilledPacket(entityName, entityType);
+        return new ClientBoundPlayerKilledEntityPacket(entityName, entityType);
     }
 
     /* handle the packet; forge, fabric and neoforge */
-    public static void handle(EntityKilledPacket packet) {
+    public static void handle(ClientBoundPlayerKilledEntityPacket packet) {
         WhatDidIJustKill.LOGGER.info("packet got handled");
         WhatDidIJustKill.LOGGER.info(packet.entityName().getString());
         WhatDidIJustKill.LOGGER.info(packet.entityType().toString());
