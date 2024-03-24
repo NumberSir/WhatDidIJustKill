@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 public class BetterToast implements Toast {
@@ -18,16 +19,22 @@ public class BetterToast implements Toast {
     private final ResourceLocation entityType;
 
     public BetterToast(Component entityName, ResourceLocation entityType) {
-        this.entityName = entityName;
+        this.entityName = makeComponent(entityName);
         this.entityType = entityType;
     }
 
     @Override
     public Visibility render(GuiGraphics graphics, ToastComponent parent, long l) {
         graphics.blitSprite(BACKGROUND_SPRITE, 0, 0, this.width(), this.height());
+
         // draw text
-        graphics.drawString(parent.getMinecraft().font, entityName, 30, 7, ChatFormatting.WHITE.getColor());
-        graphics.drawString(parent.getMinecraft().font, entityType.toString(), 30, 17, ChatFormatting.DARK_GRAY.getColor());
+        int mainTextY = 12;
+        if (parent.getMinecraft().options.advancedItemTooltips) {
+            mainTextY = 7;
+            graphics.drawString(parent.getMinecraft().font, entityType.toString(), 30, 17, ChatFormatting.DARK_GRAY.getColor());
+        }
+        graphics.drawString(parent.getMinecraft().font, entityName, 30, mainTextY, ChatFormatting.WHITE.getColor());
+
         // draw entity texture
         graphics.blit(UNKNOWN_ENTITY, 8, 8, 0, 0, 16, 16, 16, 16);
 
@@ -35,6 +42,14 @@ public class BetterToast implements Toast {
         return (double) l >= DISPLAY_TIME * parent.getNotificationDisplayTimeMultiplier()
                 ? Toast.Visibility.HIDE
                 : Toast.Visibility.SHOW;
+    }
+
+    private static MutableComponent makeComponent(Component entityName) {
+        WhatDidIJustKill.LOGGER.info("{}", entityName.getStyle().getColor());
+        if (entityName.getStyle().getColor() == null) {
+            entityName = entityName.copy().withStyle(ChatFormatting.WHITE);
+        }
+        return Component.translatable("screen." + WhatDidIJustKill.MOD_ID + ".killed", entityName).withStyle(ChatFormatting.GRAY);
     }
 
 }
