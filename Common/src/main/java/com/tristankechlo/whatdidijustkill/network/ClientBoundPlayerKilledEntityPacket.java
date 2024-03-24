@@ -1,7 +1,7 @@
 package com.tristankechlo.whatdidijustkill.network;
 
-import com.tristankechlo.whatdidijustkill.client.Toast;
-import com.tristankechlo.whatdidijustkill.client.ToastRenderer;
+import com.tristankechlo.whatdidijustkill.client.BetterToast;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -25,11 +25,8 @@ public record ClientBoundPlayerKilledEntityPacket(Component entityName, Resource
 
     /* handle the packet; forge, fabric and neoforge */
     public static void handle(ClientBoundPlayerKilledEntityPacket packet) {
-        if (ToastRenderer.TOASTS.isEmpty()) {
-            ToastRenderer.TOASTS.add(Toast.create(packet.entityName(), packet.entityType()));
-        } else {
-            ToastRenderer.TOASTS.set(0, Toast.create(packet.entityName(), packet.entityType()));
-        }
+        // TODO only add toasts if enabled
+        Minecraft.getInstance().getToasts().addToast(new BetterToast(packet.entityName(), packet.entityType()));
     }
 
 }

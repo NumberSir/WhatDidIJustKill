@@ -30,6 +30,9 @@ public abstract class LivingEntityMixin {
         if (self.isRemoved() || this.dead || self.level().isClientSide()) {
             return;
         }
+
+        // TODO check if this mob can have the toast
+
         Entity causingEntity = source.getEntity(); // entity doing the action
         Entity directEntity = source.getDirectEntity(); // arrow / player / potion / ...
         Component entityName = self.getDisplayName();
