@@ -11,8 +11,6 @@ public class ForgeWhatDidIJustKill {
 
     public ForgeWhatDidIJustKill() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
     }
 
