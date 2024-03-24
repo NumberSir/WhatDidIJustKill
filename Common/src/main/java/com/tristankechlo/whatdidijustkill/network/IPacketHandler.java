@@ -1,12 +1,13 @@
 package com.tristankechlo.whatdidijustkill.network;
 
 import com.tristankechlo.whatdidijustkill.WhatDidIJustKill;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 public interface IPacketHandler {
 
     public static final IPacketHandler INSTANCE = WhatDidIJustKill.load(IPacketHandler.class);
 
-    void sendPacketEntityKilled(ServerPlayer player);
+    void sendPacketEntityKilled(ServerPlayer player, EntityKilledPacket packet);
 
 }

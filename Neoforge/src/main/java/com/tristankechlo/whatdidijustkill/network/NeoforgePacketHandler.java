@@ -1,6 +1,7 @@
 package com.tristankechlo.whatdidijustkill.network;
 
 import com.tristankechlo.whatdidijustkill.WhatDidIJustKill;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
@@ -19,9 +20,9 @@ public class NeoforgePacketHandler implements IPacketHandler {
     }
 
     @Override
-    public void sendPacketEntityKilled(ServerPlayer player) {
-        NeoforgeEntityKilledPacket packet = new NeoforgeEntityKilledPacket();
-        PacketDistributor.PLAYER.with(player).send(packet);
+    public void sendPacketEntityKilled(ServerPlayer player, EntityKilledPacket packet) {
+        NeoforgeEntityKilledPacket message = new NeoforgeEntityKilledPacket(packet);
+        PacketDistributor.PLAYER.with(player).send(message);
     }
 
     private static void handle(NeoforgeEntityKilledPacket packet, PlayPayloadContext context) {

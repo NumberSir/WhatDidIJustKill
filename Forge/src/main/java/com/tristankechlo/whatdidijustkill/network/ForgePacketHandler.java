@@ -29,8 +29,7 @@ public class ForgePacketHandler implements IPacketHandler {
     }
 
     @Override
-    public void sendPacketEntityKilled(ServerPlayer player) {
-        EntityKilledPacket packet = new EntityKilledPacket();
+    public void sendPacketEntityKilled(ServerPlayer player, EntityKilledPacket packet) {
         INSTANCE.send(packet, PacketDistributor.PLAYER.with(player));
     }
 
