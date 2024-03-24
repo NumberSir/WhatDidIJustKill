@@ -1,6 +1,6 @@
 package com.tristankechlo.whatdidijustkill.network;
 
-import com.tristankechlo.whatdidijustkill.client.BetterToast;
+import com.tristankechlo.whatdidijustkill.client.EntityKilledToast;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -26,7 +26,7 @@ public record ClientBoundPlayerKilledEntityPacket(Component entityName, Resource
     /* handle the packet; forge, fabric and neoforge */
     public static void handle(ClientBoundPlayerKilledEntityPacket packet) {
         // TODO only add toasts if enabled
-        Minecraft.getInstance().getToasts().addToast(new BetterToast(packet.entityName(), packet.entityType()));
+        Minecraft.getInstance().getToasts().addToast(new EntityKilledToast(packet.entityName(), packet.entityType()));
     }
 
 }
