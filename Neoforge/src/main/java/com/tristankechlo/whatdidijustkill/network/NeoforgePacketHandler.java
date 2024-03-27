@@ -19,7 +19,7 @@ public class NeoforgePacketHandler implements IPacketHandler {
     }
 
     @Override
-    public void sendPacketEntityKilled(ServerPlayer player, ClientBoundPlayerKilledEntityPacket packet) {
+    public void sendPacketEntityKilledByPlayer(ServerPlayer player, ClientBoundPlayerKilledEntityPacket packet) {
         NeoforgePlayerKilledEntityPacketWrapper message = new NeoforgePlayerKilledEntityPacketWrapper(packet);
         PacketDistributor.PLAYER.with(player).send(message);
     }

@@ -17,7 +17,7 @@ public class FabricPacketHandler implements IPacketHandler {
     }
 
     @Override
-    public void sendPacketEntityKilled(ServerPlayer player, ClientBoundPlayerKilledEntityPacket packet) {
+    public void sendPacketEntityKilledByPlayer(ServerPlayer player, ClientBoundPlayerKilledEntityPacket packet) {
         FriendlyByteBuf buffer = PacketByteBufs.create();
         ClientBoundPlayerKilledEntityPacket.encode(packet, buffer);
         ServerPlayNetworking.send(player, WhatDidIJustKill.CHANNEL, buffer);

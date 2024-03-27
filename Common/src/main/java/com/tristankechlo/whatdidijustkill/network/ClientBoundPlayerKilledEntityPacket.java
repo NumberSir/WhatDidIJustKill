@@ -15,7 +15,9 @@ public record ClientBoundPlayerKilledEntityPacket(Component entityName, Resource
         // add data to packet here
         buffer.writeComponent(packet.entityName());
         buffer.writeResourceLocation(packet.entityType());
-        // TODO add more values
+        buffer.writeBlockPos(packet.pos1());
+        buffer.writeBlockPos(packet.pos2());
+        buffer.writeBoolean(packet.hasSpecialName());
     }
 
     /* encode for forge and fabric */
@@ -23,7 +25,10 @@ public record ClientBoundPlayerKilledEntityPacket(Component entityName, Resource
         // read data from packet
         Component entityName = buffer.readComponent();
         ResourceLocation entityType = buffer.readResourceLocation();
-        return new ClientBoundPlayerKilledEntityPacket(entityName, entityType, null, null, false);
+        BlockPos pos1 = buffer.readBlockPos();
+        BlockPos pos2 = buffer.readBlockPos();
+        boolean hasCustomName = buffer.readBoolean();
+        return new ClientBoundPlayerKilledEntityPacket(entityName, entityType, pos1, pos2, hasCustomName);
     }
 
     /* handle the packet; forge, fabric and neoforge */
@@ -35,11 +40,15 @@ public record ClientBoundPlayerKilledEntityPacket(Component entityName, Resource
         final boolean hasSpecialName = packet.hasSpecialName();
 
         boolean shouldShowToast = false;
+
         if (showOnlyMobsWithSpecialNames && hasSpecialName && !excluded) {
             // only show mobs with special names and also filter out excluded mobs
             shouldShowToast = true;
-        } else if (showLongDistance && wasLongDistance) { // can bypass excluded mobs
+
+        } else if (showLongDistance && wasLongDistance) {
+            // show mobs that got killed over a large distance, can bypass excluded mobs
             shouldShowToast = true;
+
         } else if (!excluded) {
             shouldShowToast = true;
         }
