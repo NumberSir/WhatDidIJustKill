@@ -31,8 +31,6 @@ public abstract class LivingEntityMixin {
             return;
         }
 
-        // TODO check if this mob can have the toast
-
         Entity causingEntity = source.getEntity(); // entity doing the action
         Entity directEntity = source.getDirectEntity(); // arrow / player / potion / ...
         Component entityName = self.getDisplayName();
@@ -41,10 +39,11 @@ public abstract class LivingEntityMixin {
         if (causingEntity == null && directEntity == null) {
             LivingEntity killCredit = this.getKillCredit(); // the entity that got the kill credited
             if (killCredit instanceof ServerPlayer player) {
-                IPacketHandler.INSTANCE.sendPacketEntityKilled(player, new ClientBoundPlayerKilledEntityPacket(entityName, entityType));
+                // TODO add more values
+                IPacketHandler.INSTANCE.sendPacketEntityKilled(player, new ClientBoundPlayerKilledEntityPacket(entityName, entityType, null, null, false));
             }
         } else if (causingEntity instanceof ServerPlayer player) {
-            IPacketHandler.INSTANCE.sendPacketEntityKilled(player, new ClientBoundPlayerKilledEntityPacket(entityName, entityType));
+            IPacketHandler.INSTANCE.sendPacketEntityKilled(player, new ClientBoundPlayerKilledEntityPacket(entityName, entityType, null, null, false));
         }
     }
 

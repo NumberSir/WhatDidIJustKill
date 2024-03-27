@@ -1,18 +1,21 @@
 package com.tristankechlo.whatdidijustkill.network;
 
 import com.tristankechlo.whatdidijustkill.client.EntityKilledToast;
+import com.tristankechlo.whatdidijustkill.config.WhatDidIJustKillConfig;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-public record ClientBoundPlayerKilledEntityPacket(Component entityName, ResourceLocation entityType) {
+public record ClientBoundPlayerKilledEntityPacket(Component entityName, ResourceLocation entityType, BlockPos pos1, BlockPos pos2, boolean hasSpecialName) {
 
     /* decode for forge and fabric */
     public static void encode(ClientBoundPlayerKilledEntityPacket packet, FriendlyByteBuf buffer) {
         // add data to packet here
         buffer.writeComponent(packet.entityName());
         buffer.writeResourceLocation(packet.entityType());
+        // TODO add more values
     }
 
     /* encode for forge and fabric */
@@ -20,13 +23,30 @@ public record ClientBoundPlayerKilledEntityPacket(Component entityName, Resource
         // read data from packet
         Component entityName = buffer.readComponent();
         ResourceLocation entityType = buffer.readResourceLocation();
-        return new ClientBoundPlayerKilledEntityPacket(entityName, entityType);
+        return new ClientBoundPlayerKilledEntityPacket(entityName, entityType, null, null, false);
     }
 
     /* handle the packet; forge, fabric and neoforge */
     public static void handle(ClientBoundPlayerKilledEntityPacket packet) {
-        // TODO only add toasts if enabled
-        Minecraft.getInstance().getToasts().addToast(new EntityKilledToast(packet.entityName(), packet.entityType()));
+        final boolean excluded = WhatDidIJustKillConfig.get().isEntityExcluded(packet.entityType);
+        final boolean showLongDistance = WhatDidIJustKillConfig.get().longDistance().alwaysShow();
+        final boolean wasLongDistance = WhatDidIJustKillConfig.get().longDistance().wasLongDistance(packet.pos1, packet.pos2);
+        final boolean showOnlyMobsWithSpecialNames = WhatDidIJustKillConfig.get().onlyNamedMobs();
+        final boolean hasSpecialName = packet.hasSpecialName();
+
+        boolean shouldShowToast = false;
+        if (showOnlyMobsWithSpecialNames && hasSpecialName && !excluded) {
+            // only show mobs with special names and also filter out excluded mobs
+            shouldShowToast = true;
+        } else if (showLongDistance && wasLongDistance) { // can bypass excluded mobs
+            shouldShowToast = true;
+        } else if (!excluded) {
+            shouldShowToast = true;
+        }
+        // only add toasts if enabled
+        if (shouldShowToast) {
+            Minecraft.getInstance().getToasts().addToast(new EntityKilledToast(packet.entityName(), packet.entityType()));
+        }
     }
 
 }

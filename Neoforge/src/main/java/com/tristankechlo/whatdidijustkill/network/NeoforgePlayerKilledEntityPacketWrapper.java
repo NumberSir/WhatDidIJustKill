@@ -12,7 +12,8 @@ public record NeoforgePlayerKilledEntityPacketWrapper(ClientBoundPlayerKilledEnt
         // read data from packet
         Component entityName = buffer.readComponent();
         ResourceLocation entityType = buffer.readResourceLocation();
-        ClientBoundPlayerKilledEntityPacket packet = new ClientBoundPlayerKilledEntityPacket(entityName, entityType);
+        // TODO add more values
+        ClientBoundPlayerKilledEntityPacket packet = new ClientBoundPlayerKilledEntityPacket(entityName, entityType, null, null, false);
         return new NeoforgePlayerKilledEntityPacketWrapper(packet);
     }
 

@@ -1,6 +1,7 @@
 package com.tristankechlo.whatdidijustkill.client;
 
 import com.tristankechlo.whatdidijustkill.WhatDidIJustKill;
+import com.tristankechlo.whatdidijustkill.config.WhatDidIJustKillConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -18,8 +19,8 @@ public class EntityKilledToast implements Toast {
 
     private static final ResourceLocation BACKGROUND_SPRITE = new ResourceLocation("toast/advancement");
     private static final ResourceLocation UNKNOWN_ENTITY = new ResourceLocation(WhatDidIJustKill.MOD_ID, "textures/entity_unknown.png");
-    public static final int MAX_DISPLAY_TIME = 3000; // TODO read value from config
 
+    private final int displayTime;
     private final Component entityName;
     private final ResourceLocation entityType;
     private final ResourceLocation textureLocation;
@@ -27,6 +28,8 @@ public class EntityKilledToast implements Toast {
     public EntityKilledToast(Component entityName, ResourceLocation entityType) {
         this.entityName = makeComponent(entityName);
         this.entityType = entityType;
+
+        this.displayTime = WhatDidIJustKillConfig.get().timeout();
 
         ResourceLocation location = makeTextureLoc(entityType);
         AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(location);
@@ -53,7 +56,7 @@ public class EntityKilledToast implements Toast {
         graphics.blit(this.textureLocation, 8, 8, 0, 0, 16, 16, 16, 16);
 
         // remove toast when time is over
-        return (double) displayTime >= MAX_DISPLAY_TIME * parent.getNotificationDisplayTimeMultiplier()
+        return (double) displayTime >= this.displayTime * parent.getNotificationDisplayTimeMultiplier()
                 ? Toast.Visibility.HIDE
                 : Toast.Visibility.SHOW;
     }
