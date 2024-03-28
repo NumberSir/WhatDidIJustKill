@@ -12,7 +12,7 @@ public interface IPacketHandler {
 
     public static final IPacketHandler INSTANCE = WhatDidIJustKill.load(IPacketHandler.class);
 
-    void sendPacketEntityKilledByPlayer(ServerPlayer player, ClientBoundPlayerKilledEntityPacket packet);
+    void sendPacketEntityKilledByPlayer(ServerPlayer player, ClientBoundEntityKilledPacket packet);
 
     default void sendPacketEntityKilled(ServerPlayer player, Entity killed) {
         BlockPos pos2 = player.blockPosition();
@@ -22,8 +22,8 @@ public interface IPacketHandler {
         this.sendPacketEntityKilledByPlayer(player, makePacket(entityName, entityType, pos1, pos2, killed.hasCustomName()));
     }
 
-    private static ClientBoundPlayerKilledEntityPacket makePacket(Component entityName, ResourceLocation entityType, BlockPos pos1, BlockPos pos2, boolean hasSpecialName) {
-        return new ClientBoundPlayerKilledEntityPacket(entityName, entityType, pos1, pos2, hasSpecialName);
+    private static ClientBoundEntityKilledPacket makePacket(Component entityName, ResourceLocation entityType, BlockPos pos1, BlockPos pos2, boolean hasSpecialName) {
+        return new ClientBoundEntityKilledPacket(entityName, entityType, pos1, pos2, hasSpecialName);
     }
 
 }

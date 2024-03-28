@@ -36,8 +36,6 @@ public class EntityKilledToast implements Toast {
         AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(location);
         boolean found = texture == MissingTextureAtlasSprite.getTexture();
         this.textureLocation = found ? UNKNOWN_ENTITY : location;
-
-        WhatDidIJustKill.LOGGER.info("{}", textureLocation);
     }
 
     @Override

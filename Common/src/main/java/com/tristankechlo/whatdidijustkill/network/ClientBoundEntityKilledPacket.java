@@ -9,10 +9,10 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-public record ClientBoundPlayerKilledEntityPacket(Component entityName, ResourceLocation entityType, BlockPos pos1, BlockPos pos2, boolean hasSpecialName) {
+public record ClientBoundEntityKilledPacket(Component entityName, ResourceLocation entityType, BlockPos pos1, BlockPos pos2, boolean hasSpecialName) {
 
     /* decode for forge and fabric */
-    public static void encode(ClientBoundPlayerKilledEntityPacket packet, FriendlyByteBuf buffer) {
+    public static void encode(ClientBoundEntityKilledPacket packet, FriendlyByteBuf buffer) {
         // add data to packet here
         buffer.writeComponent(packet.entityName());
         buffer.writeResourceLocation(packet.entityType());
@@ -22,18 +22,18 @@ public record ClientBoundPlayerKilledEntityPacket(Component entityName, Resource
     }
 
     /* encode for forge and fabric */
-    public static ClientBoundPlayerKilledEntityPacket decode(FriendlyByteBuf buffer) {
+    public static ClientBoundEntityKilledPacket decode(FriendlyByteBuf buffer) {
         // read data from packet
         Component entityName = buffer.readComponent();
         ResourceLocation entityType = buffer.readResourceLocation();
         BlockPos pos1 = buffer.readBlockPos();
         BlockPos pos2 = buffer.readBlockPos();
         boolean hasCustomName = buffer.readBoolean();
-        return new ClientBoundPlayerKilledEntityPacket(entityName, entityType, pos1, pos2, hasCustomName);
+        return new ClientBoundEntityKilledPacket(entityName, entityType, pos1, pos2, hasCustomName);
     }
 
     /* handle the packet; forge, fabric and neoforge */
-    public static void handle(ClientBoundPlayerKilledEntityPacket packet) {
+    public static void handle(ClientBoundEntityKilledPacket packet) {
         if (!WhatDidIJustKillConfig.get().enabled()) {
             return;
         }

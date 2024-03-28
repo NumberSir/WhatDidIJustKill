@@ -19,14 +19,14 @@ public class NeoforgePacketHandler implements IPacketHandler {
     }
 
     @Override
-    public void sendPacketEntityKilledByPlayer(ServerPlayer player, ClientBoundPlayerKilledEntityPacket packet) {
+    public void sendPacketEntityKilledByPlayer(ServerPlayer player, ClientBoundEntityKilledPacket packet) {
         NeoforgePlayerKilledEntityPacketWrapper message = new NeoforgePlayerKilledEntityPacketWrapper(packet);
         PacketDistributor.PLAYER.with(player).send(message);
     }
 
     private static void handle(NeoforgePlayerKilledEntityPacketWrapper packet, PlayPayloadContext context) {
         context.workHandler().submitAsync(() -> {
-            ClientBoundPlayerKilledEntityPacket.handle(packet.packet());
+            ClientBoundEntityKilledPacket.handle(packet.packet());
         });
     }
 
