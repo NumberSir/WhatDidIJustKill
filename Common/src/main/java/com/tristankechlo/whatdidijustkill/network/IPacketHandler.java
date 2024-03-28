@@ -23,7 +23,8 @@ public interface IPacketHandler {
     }
 
     private static ClientBoundEntityKilledPacket makePacket(Component entityName, ResourceLocation entityType, BlockPos pos1, BlockPos pos2, boolean hasSpecialName) {
-        return new ClientBoundEntityKilledPacket(entityName, entityType, pos1, pos2, hasSpecialName);
+        double distance = Math.sqrt(pos1.distSqr(pos2));
+        return new ClientBoundEntityKilledPacket(entityName, entityType, distance, hasSpecialName);
     }
 
 }

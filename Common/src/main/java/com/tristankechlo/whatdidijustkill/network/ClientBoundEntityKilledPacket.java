@@ -9,15 +9,14 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-public record ClientBoundEntityKilledPacket(Component entityName, ResourceLocation entityType, BlockPos pos1, BlockPos pos2, boolean hasSpecialName) {
+public record ClientBoundEntityKilledPacket(Component entityName, ResourceLocation entityType, double distance, boolean hasSpecialName) {
 
     /* decode for forge and fabric */
     public static void encode(ClientBoundEntityKilledPacket packet, FriendlyByteBuf buffer) {
         // add data to packet here
         buffer.writeComponent(packet.entityName());
         buffer.writeResourceLocation(packet.entityType());
-        buffer.writeBlockPos(packet.pos1());
-        buffer.writeBlockPos(packet.pos2());
+        buffer.writeDouble(packet.distance());
         buffer.writeBoolean(packet.hasSpecialName());
     }
 
@@ -26,10 +25,9 @@ public record ClientBoundEntityKilledPacket(Component entityName, ResourceLocati
         // read data from packet
         Component entityName = buffer.readComponent();
         ResourceLocation entityType = buffer.readResourceLocation();
-        BlockPos pos1 = buffer.readBlockPos();
-        BlockPos pos2 = buffer.readBlockPos();
+        double distance = buffer.readDouble();
         boolean hasCustomName = buffer.readBoolean();
-        return new ClientBoundEntityKilledPacket(entityName, entityType, pos1, pos2, hasCustomName);
+        return new ClientBoundEntityKilledPacket(entityName, entityType, distance, hasCustomName);
     }
 
     /* handle the packet; forge, fabric and neoforge */
@@ -38,11 +36,9 @@ public record ClientBoundEntityKilledPacket(Component entityName, ResourceLocati
             return;
         }
 
-        final double distance = Math.sqrt(packet.pos1.distSqr(packet.pos2));
-
         final boolean excluded = WhatDidIJustKillConfig.get().isEntityExcluded(packet.entityType);
         final boolean showLongDistance = WhatDidIJustKillConfig.get().longDistance().alwaysShow();
-        final boolean wasLongDistance = distance > WhatDidIJustKillConfig.get().longDistance().threshold();
+        final boolean wasLongDistance = packet.distance() > WhatDidIJustKillConfig.get().longDistance().threshold();
         final boolean showOnlyMobsWithSpecialNames = WhatDidIJustKillConfig.get().onlyNamedMobs();
         final boolean hasSpecialName = packet.hasSpecialName();
 
@@ -54,7 +50,7 @@ public record ClientBoundEntityKilledPacket(Component entityName, ResourceLocati
 
         } else if (showLongDistance && wasLongDistance) {
             // show mobs that got killed over a large distance, can bypass excluded mobs
-            toastManager.addToast(EntityKilledToast.makeToast(packet.entityName(), packet.entityType(), distance));
+            toastManager.addToast(EntityKilledToast.makeToast(packet.entityName(), packet.entityType(), packet.distance()));
 
         } else if (!excluded) {
             // only add toasts if mob not excluded
