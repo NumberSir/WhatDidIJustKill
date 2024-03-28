@@ -8,6 +8,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 
+import java.util.UUID;
+
 public interface IPacketHandler {
 
     public static final IPacketHandler INSTANCE = WhatDidIJustKill.load(IPacketHandler.class);
@@ -19,12 +21,17 @@ public interface IPacketHandler {
         Component entityName = killed.getDisplayName();
         BlockPos pos1 = killed.blockPosition();
         ResourceLocation entityType = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType());
-        this.sendPacketEntityKilledByPlayer(player, makePacket(entityName, entityType, pos1, pos2, killed.hasCustomName()));
+        double distance = Math.sqrt(pos1.distSqr(pos2));
+        this.sendPacketEntityKilledByPlayer(player, new ClientBoundEntityKilledPacket(entityName, entityType, distance, killed.hasCustomName()));
     }
 
-    private static ClientBoundEntityKilledPacket makePacket(Component entityName, ResourceLocation entityType, BlockPos pos1, BlockPos pos2, boolean hasSpecialName) {
-        double distance = Math.sqrt(pos1.distSqr(pos2));
-        return new ClientBoundEntityKilledPacket(entityName, entityType, distance, hasSpecialName);
+    void sendPacketPlayerKilledByPlayer(ServerPlayer player, ClientBoundPlayerKilledPacket packet);
+
+    default void sendPacketPlayerKilled(ServerPlayer player, ServerPlayer deadPlayer) {
+        Component playerName = deadPlayer.getDisplayName();
+        UUID uuid = deadPlayer.getUUID();
+        double distance = Math.sqrt(player.blockPosition().distSqr(deadPlayer.blockPosition()));
+        this.sendPacketPlayerKilledByPlayer(player, new ClientBoundPlayerKilledPacket(uuid, playerName, distance));
     }
 
 }

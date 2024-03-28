@@ -34,8 +34,12 @@ public class EntityKilledToast implements Toast {
 
         ResourceLocation location = makeTextureLoc(entityType);
         AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(location);
-        boolean found = texture == MissingTextureAtlasSprite.getTexture();
-        this.textureLocation = found ? UNKNOWN_ENTITY : location;
+        if (texture != MissingTextureAtlasSprite.getTexture()) {
+            this.textureLocation = location;
+        } else {
+            WhatDidIJustKill.LOGGER.warn("Did not find icon for '{}' at '{}' using fallback icon.", entityType, location);
+            this.textureLocation = UNKNOWN_ENTITY;
+        }
     }
 
     @Override

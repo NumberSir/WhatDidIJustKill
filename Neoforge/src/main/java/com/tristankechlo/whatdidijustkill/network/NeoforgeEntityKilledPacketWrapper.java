@@ -5,11 +5,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
-public record NeoforgePlayerKilledEntityPacketWrapper(ClientBoundEntityKilledPacket packet) implements CustomPacketPayload {
+public record NeoforgeEntityKilledPacketWrapper(ClientBoundEntityKilledPacket packet) implements CustomPacketPayload {
 
-    public static NeoforgePlayerKilledEntityPacketWrapper decode(FriendlyByteBuf buffer) {
+    public static NeoforgeEntityKilledPacketWrapper decode(FriendlyByteBuf buffer) {
         ClientBoundEntityKilledPacket packet = ClientBoundEntityKilledPacket.decode(buffer);
-        return new NeoforgePlayerKilledEntityPacketWrapper(packet);
+        return new NeoforgeEntityKilledPacketWrapper(packet);
     }
 
     @Override
@@ -19,7 +19,7 @@ public record NeoforgePlayerKilledEntityPacketWrapper(ClientBoundEntityKilledPac
 
     @Override
     public ResourceLocation id() {
-        return WhatDidIJustKill.CHANNEL;
+        return WhatDidIJustKill.ENTITY_KILLED;
     }
 
 }

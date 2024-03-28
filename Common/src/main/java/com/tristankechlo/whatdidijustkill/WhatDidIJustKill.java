@@ -26,6 +26,7 @@ public class WhatDidIJustKill {
         return loadedService;
     }
 
-    public static final ResourceLocation CHANNEL = new ResourceLocation(WhatDidIJustKill.MOD_ID, "entity_killed");
+    public static final ResourceLocation ENTITY_KILLED = new ResourceLocation(WhatDidIJustKill.MOD_ID, "entity_killed");
+    public static final ResourceLocation PLAYER_KILLED = new ResourceLocation(WhatDidIJustKill.MOD_ID, "player_killed");
 
 }
