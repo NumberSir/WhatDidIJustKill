@@ -1,3 +1,4 @@
 {
-    "screen.whatdidijustkill.killed": "%s getötet"
+    "screen.whatdidijustkill.killed": "%s getötet",
+    "screen.whatdidijustkill.killed.distance": "%s getötet (%sm)"
 }

@@ -9,6 +9,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class ConfigManager {
@@ -35,12 +39,16 @@ public final class ConfigManager {
                 WhatDidIJustKill.LOGGER.info("Config '{}' was successfully loaded.", FILE_NAME);
             } else {
                 WhatDidIJustKill.LOGGER.error("Config '{}' did not load correctly. Using default config.", FILE_NAME);
+                ConfigManager.backupConfig();
                 WhatDidIJustKillConfig.setToDefault();
+                ConfigManager.writeConfigToFile();
             }
         } catch (Exception e) {
             WhatDidIJustKill.LOGGER.error(e.getMessage());
             WhatDidIJustKill.LOGGER.error("Error loading config '{}', config hasn't been loaded. Using default config.", FILE_NAME);
+            ConfigManager.backupConfig();
             WhatDidIJustKillConfig.setToDefault();
+            ConfigManager.writeConfigToFile();
             successFul.set(false);
         }
 
@@ -103,4 +111,18 @@ public final class ConfigManager {
             }
         }
     }
+
+    private static void backupConfig() {
+        String backupFileName = FILE_NAME.replace(".json", ".backup.txt");
+        Path backupFilePath = Paths.get(CONFIG_DIR.getAbsolutePath(), backupFileName);
+        try {
+            List<String> lines = Files.readAllLines(CONFIG_FILE.toPath());
+            Files.write(backupFilePath, lines);
+            WhatDidIJustKill.LOGGER.warn("Created backup file '{}'", backupFileName);
+        } catch (Exception e) {
+            WhatDidIJustKill.LOGGER.error("Error creating backup file '{}'", backupFileName);
+            WhatDidIJustKill.LOGGER.error(e.getMessage());
+        }
+    }
+
 }

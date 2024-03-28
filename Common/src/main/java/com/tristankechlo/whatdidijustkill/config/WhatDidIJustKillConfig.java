@@ -9,22 +9,22 @@ import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tristankechlo.whatdidijustkill.IPlatformHelper;
 import com.tristankechlo.whatdidijustkill.WhatDidIJustKill;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 
 import java.util.List;
 import java.util.Optional;
 
-public record WhatDidIJustKillConfig(boolean enabled, boolean onlyNamedMobs, int timeout, LongDistance longDistance, List<Either<ResourceLocation, ModWildcard>> excludes) {
+public record WhatDidIJustKillConfig(boolean enabled, boolean onlyNamedMobs, int timeout, boolean hideEntityType, LongDistance longDistance, List<Either<ResourceLocation, ModWildcard>> excludes) {
 
-    public static final WhatDidIJustKillConfig DEFAULT = new WhatDidIJustKillConfig(true, false, 2000, LongDistance.DEFAULT, List.of(Either.left(new ResourceLocation("bat"))));
+    public static final WhatDidIJustKillConfig DEFAULT = new WhatDidIJustKillConfig(true, false, 2000, false, LongDistance.DEFAULT, List.of(Either.left(new ResourceLocation("bat"))));
 
     public static final Codec<WhatDidIJustKillConfig> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                     Codec.BOOL.fieldOf("enabled").forGetter(WhatDidIJustKillConfig::enabled),
                     Codec.BOOL.fieldOf("only_named_mobs").forGetter(WhatDidIJustKillConfig::onlyNamedMobs),
                     Codec.intRange(250, 10000).fieldOf("timeout").forGetter(WhatDidIJustKillConfig::timeout),
+                    Codec.BOOL.fieldOf("hide_entity_type").forGetter(WhatDidIJustKillConfig::hideEntityType),
                     LongDistance.CODEC.fieldOf("long_distance").forGetter(WhatDidIJustKillConfig::longDistance),
                     Codec.either(ResourceLocation.CODEC, ModWildcard.CODEC).listOf().fieldOf("excludes").forGetter(WhatDidIJustKillConfig::excludes)
             ).apply(instance, WhatDidIJustKillConfig::new)
@@ -90,10 +90,6 @@ public record WhatDidIJustKillConfig(boolean enabled, boolean onlyNamedMobs, int
                         Codec.doubleRange(0, Double.MAX_VALUE).fieldOf("threshold").forGetter(LongDistance::threshold)
                 ).apply(instance, LongDistance::new)
         );
-
-        public boolean wasLongDistance(BlockPos pos1, BlockPos pos2) {
-            return false;
-        }
 
     }
 

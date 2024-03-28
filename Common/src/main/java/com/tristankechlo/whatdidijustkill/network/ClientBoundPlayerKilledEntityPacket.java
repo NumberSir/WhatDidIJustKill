@@ -3,6 +3,7 @@ package com.tristankechlo.whatdidijustkill.network;
 import com.tristankechlo.whatdidijustkill.client.EntityKilledToast;
 import com.tristankechlo.whatdidijustkill.config.WhatDidIJustKillConfig;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -33,28 +34,31 @@ public record ClientBoundPlayerKilledEntityPacket(Component entityName, Resource
 
     /* handle the packet; forge, fabric and neoforge */
     public static void handle(ClientBoundPlayerKilledEntityPacket packet) {
+        if (!WhatDidIJustKillConfig.get().enabled()) {
+            return;
+        }
+
+        final double distance = Math.sqrt(packet.pos1.distSqr(packet.pos2));
+
         final boolean excluded = WhatDidIJustKillConfig.get().isEntityExcluded(packet.entityType);
         final boolean showLongDistance = WhatDidIJustKillConfig.get().longDistance().alwaysShow();
-        final boolean wasLongDistance = WhatDidIJustKillConfig.get().longDistance().wasLongDistance(packet.pos1, packet.pos2);
+        final boolean wasLongDistance = distance > WhatDidIJustKillConfig.get().longDistance().threshold();
         final boolean showOnlyMobsWithSpecialNames = WhatDidIJustKillConfig.get().onlyNamedMobs();
         final boolean hasSpecialName = packet.hasSpecialName();
 
-        boolean shouldShowToast = false;
+        final ToastComponent toastManager = Minecraft.getInstance().getToasts();
 
         if (showOnlyMobsWithSpecialNames && hasSpecialName && !excluded) {
             // only show mobs with special names and also filter out excluded mobs
-            shouldShowToast = true;
+            toastManager.addToast(EntityKilledToast.makeToast(packet.entityName(), packet.entityType()));
 
         } else if (showLongDistance && wasLongDistance) {
             // show mobs that got killed over a large distance, can bypass excluded mobs
-            shouldShowToast = true;
+            toastManager.addToast(EntityKilledToast.makeToast(packet.entityName(), packet.entityType(), distance));
 
         } else if (!excluded) {
-            shouldShowToast = true;
-        }
-        // only add toasts if enabled
-        if (shouldShowToast) {
-            Minecraft.getInstance().getToasts().addToast(new EntityKilledToast(packet.entityName(), packet.entityType()));
+            // only add toasts if mob not excluded
+            toastManager.addToast(EntityKilledToast.makeToast(packet.entityName(), packet.entityType()));
         }
     }
 

@@ -13,6 +13,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 
 public class EntityKilledToast implements Toast {
@@ -21,12 +22,12 @@ public class EntityKilledToast implements Toast {
     private static final ResourceLocation UNKNOWN_ENTITY = new ResourceLocation(WhatDidIJustKill.MOD_ID, "textures/entity_unknown.png");
 
     private final int displayTime;
-    private final Component entityName;
+    private final Component killMessage;
     private final ResourceLocation entityType;
     private final ResourceLocation textureLocation;
 
-    public EntityKilledToast(Component entityName, ResourceLocation entityType) {
-        this.entityName = makeComponent(entityName);
+    private EntityKilledToast(Component killMessage, ResourceLocation entityType) {
+        this.killMessage = killMessage;
         this.entityType = entityType;
 
         this.displayTime = WhatDidIJustKillConfig.get().timeout();
@@ -45,11 +46,11 @@ public class EntityKilledToast implements Toast {
 
         // draw text
         int mainTextY = 12;
-        if (parent.getMinecraft().options.advancedItemTooltips) {
+        if (!WhatDidIJustKillConfig.get().hideEntityType()) {
             mainTextY = 7;
             graphics.drawString(parent.getMinecraft().font, entityType.toString(), 30, 17, ChatFormatting.DARK_GRAY.getColor());
         }
-        graphics.drawString(parent.getMinecraft().font, entityName, 30, mainTextY, ChatFormatting.WHITE.getColor());
+        graphics.drawString(parent.getMinecraft().font, killMessage, 30, mainTextY, ChatFormatting.WHITE.getColor());
 
         // draw entity texture
         // TODO allow textures with different sizes
@@ -57,15 +58,28 @@ public class EntityKilledToast implements Toast {
 
         // remove toast when time is over
         return (double) displayTime >= this.displayTime * parent.getNotificationDisplayTimeMultiplier()
-                ? Toast.Visibility.HIDE
-                : Toast.Visibility.SHOW;
+                ? Visibility.HIDE
+                : Visibility.SHOW;
     }
 
-    private static MutableComponent makeComponent(Component entityName) {
+    public static EntityKilledToast makeToast(Component entityName, ResourceLocation entityType) {
         if (entityName.getStyle().getColor() == null) {
             entityName = entityName.copy().withStyle(ChatFormatting.WHITE);
         }
-        return Component.translatable("screen." + WhatDidIJustKill.MOD_ID + ".killed", entityName).withStyle(ChatFormatting.GRAY);
+        MutableComponent message = Component.translatable("screen." + WhatDidIJustKill.MOD_ID + ".killed", entityName)
+                .withStyle(ChatFormatting.GRAY);
+        return new EntityKilledToast(message, entityType);
+    }
+
+
+    public static EntityKilledToast makeToast(Component entityName, ResourceLocation entityType, double distance) {
+        if (entityName.getStyle().getColor() == null) {
+            entityName = entityName.copy().withStyle(ChatFormatting.WHITE);
+        }
+        distance = ((double) Mth.floor(distance * 10)) / 10.0D;
+        MutableComponent message = Component.translatable("screen." + WhatDidIJustKill.MOD_ID + ".killed.distance", entityName, distance)
+                .withStyle(ChatFormatting.GRAY);
+        return new EntityKilledToast(message, entityType);
     }
 
     private static ResourceLocation makeTextureLoc(ResourceLocation entityType) {
