@@ -2,9 +2,9 @@ package com.tristankechlo.whatdidijustkill.network;
 
 import com.tristankechlo.whatdidijustkill.client.EntityKilledToast;
 import com.tristankechlo.whatdidijustkill.config.WhatDidIJustKillConfig;
+import com.tristankechlo.whatdidijustkill.config.types.EntityOptions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -32,29 +32,24 @@ public record ClientBoundEntityKilledPacket(Component entityName, ResourceLocati
 
     /* handle the packet; forge, fabric and neoforge */
     public static void handle(ClientBoundEntityKilledPacket packet) {
-        if (!WhatDidIJustKillConfig.get().enabled()) {
+        if (WhatDidIJustKillConfig.get().entity().showToast() == EntityOptions.ShowToastOption.NONE) {
             return;
         }
 
-        final boolean excluded = WhatDidIJustKillConfig.get().isEntityExcluded(packet.entityType);
-        final boolean showLongDistance = WhatDidIJustKillConfig.get().longDistance().alwaysShow();
-        final boolean wasLongDistance = packet.distance() > WhatDidIJustKillConfig.get().longDistance().threshold();
-        final boolean showOnlyMobsWithSpecialNames = WhatDidIJustKillConfig.get().onlyNamedMobs();
-        final boolean hasSpecialName = packet.hasSpecialName();
+        if (WhatDidIJustKillConfig.get().entity().isEntityExcluded(packet.entityType)) {
+            return;
+        }
 
+        final boolean showOnlyMobsWithSpecialNames = WhatDidIJustKillConfig.get().entity().showToast() == EntityOptions.ShowToastOption.ONLY_NAMED;
         final ToastComponent toastManager = Minecraft.getInstance().getToasts();
 
-        if (showOnlyMobsWithSpecialNames && hasSpecialName && !excluded) {
-            // only show mobs with special names and also filter out excluded mobs
-            toastManager.addToast(EntityKilledToast.makeToast(packet.entityName(), packet.entityType()));
-
-        } else if (showLongDistance && wasLongDistance) {
-            // show mobs that got killed over a large distance, can bypass excluded mobs
-            toastManager.addToast(EntityKilledToast.makeToast(packet.entityName(), packet.entityType(), packet.distance()));
-
-        } else if (!excluded) {
-            // only add toasts if mob not excluded
-            toastManager.addToast(EntityKilledToast.makeToast(packet.entityName(), packet.entityType()));
+        if (showOnlyMobsWithSpecialNames) {
+            if (packet.hasSpecialName()) {
+                // only show mobs with special names
+                toastManager.addToast(EntityKilledToast.make(packet.entityName(), packet.entityType(), packet.distance()));
+            }
+        } else {
+            toastManager.addToast(EntityKilledToast.make(packet.entityName(), packet.entityType(), packet.distance()));
         }
     }
 

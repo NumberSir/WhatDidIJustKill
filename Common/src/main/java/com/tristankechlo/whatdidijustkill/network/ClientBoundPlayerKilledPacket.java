@@ -28,20 +28,12 @@ public record ClientBoundPlayerKilledPacket(UUID uuid, Component playerName, dou
 
     /* handle the packet; forge, fabric and neoforge */
     public static void handle(ClientBoundPlayerKilledPacket packet) {
-        if (!WhatDidIJustKillConfig.get().enabled()) {
+        if (!WhatDidIJustKillConfig.get().player().showToast()) {
             return;
         }
 
-        final boolean wasLongDistance = packet.distance() > WhatDidIJustKillConfig.get().longDistance().threshold();
-
         final ToastComponent toastManager = Minecraft.getInstance().getToasts();
-
-        if (wasLongDistance) {
-            toastManager.addToast(PlayerKilledToast.makeToast(packet.uuid, packet.playerName, packet.distance));
-        } else {
-            toastManager.addToast(PlayerKilledToast.makeToast(packet.uuid, packet.playerName));
-        }
-
+        toastManager.addToast(PlayerKilledToast.make(packet.uuid, packet.playerName, packet.distance));
     }
 
 }
