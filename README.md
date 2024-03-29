@@ -10,4 +10,8 @@
 
 ## Examples
 
-
+<img src="https://i.ibb.co/1MXM1y4/entity-normal.png" alt="entity-normal" border="0">
+<img src="https://i.ibb.co/W59MNM3/entity-one-line.png" alt="entity-one-line" border="0">
+<img src="https://i.ibb.co/rHcdCxR/entity-one-line-no-distance.png" alt="entity" border="0">
+<img src="https://i.ibb.co/zrnmvrr/entity-normal-named.png" alt="entity-normal-named" border="0">
+<img src="https://i.ibb.co/CMPx6N0/player-normal.png" alt="player-normal" border="0">
