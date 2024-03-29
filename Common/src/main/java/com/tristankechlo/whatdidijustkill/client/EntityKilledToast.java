@@ -6,8 +6,6 @@ import com.tristankechlo.whatdidijustkill.config.types.FormatOption;
 import com.tristankechlo.whatdidijustkill.config.types.ToastTheme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.toasts.Toast;
-import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -17,54 +15,23 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 
-public class EntityKilledToast implements Toast {
+public class EntityKilledToast extends AbstractEntityToast {
 
     private static final ResourceLocation UNKNOWN_ENTITY = new ResourceLocation(WhatDidIJustKill.MOD_ID, "textures/entity_unknown.png");
-
-    private final int displayTime;
-    private final Component firstLine; // not null
-    private final Component secondLine; // might be null
     private final ResourceLocation entityTexture;
-    private final ResourceLocation backgroundTexture;
-    private final boolean textShadow;
 
     private EntityKilledToast(Component firstLine, Component secondLine, ResourceLocation entityType) {
-        this.firstLine = firstLine;
-        this.secondLine = secondLine;
-
+        super(firstLine, secondLine);
+        this.entityTexture = getTextureLocationSafe(entityType);
         this.displayTime = WhatDidIJustKillConfig.get().entity().timeout();
         this.backgroundTexture = WhatDidIJustKillConfig.get().entity().theme().getBackgroundTexture();
         this.textShadow = WhatDidIJustKillConfig.get().entity().theme() == ToastTheme.ADVANCEMENT;
-
-        ResourceLocation location = makeTextureLoc(entityType);
-        AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(location);
-        if (texture != MissingTextureAtlasSprite.getTexture()) {
-            this.entityTexture = location;
-        } else {
-            WhatDidIJustKill.LOGGER.warn("Did not find icon for '{}' at '{}' using fallback icon.", entityType, location);
-            this.entityTexture = UNKNOWN_ENTITY;
-        }
     }
 
     @Override
-    public Visibility render(GuiGraphics graphics, ToastComponent parent, long displayTime) {
-        graphics.blitSprite(this.backgroundTexture, 0, 0, this.width(), this.height());
-
-        // draw text
-        if (this.secondLine != null) {
-            graphics.drawString(parent.getMinecraft().font, secondLine, 30, 17, 16777215, this.textShadow);
-        }
-        int y = this.secondLine == null ? 12 : 7;
-        graphics.drawString(parent.getMinecraft().font, firstLine, 30, y, 16777215, this.textShadow);
-
-        // draw entity texture
+    protected void renderEntityImage(GuiGraphics graphics) {
         // TODO allow textures with different sizes
         graphics.blit(this.entityTexture, 8, 8, 0, 0, 16, 16, 16, 16);
-
-        // remove toast when time is over
-        return (double) displayTime >= this.displayTime * parent.getNotificationDisplayTimeMultiplier()
-                ? Visibility.HIDE
-                : Visibility.SHOW;
     }
 
     public static EntityKilledToast make(Component entityName, ResourceLocation entityType, double distance) {
@@ -83,7 +50,18 @@ public class EntityKilledToast implements Toast {
         return new EntityKilledToast(firstLine, secondLine, entityType);
     }
 
-    private static ResourceLocation makeTextureLoc(ResourceLocation entityType) {
+    private static ResourceLocation getTextureLocationSafe(ResourceLocation entityType) {
+        ResourceLocation expectedLocation = makeExpectedLocation(entityType);
+        AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(expectedLocation);
+        if (texture != MissingTextureAtlasSprite.getTexture()) {
+            return expectedLocation;
+        } else {
+            WhatDidIJustKill.LOGGER.warn("Did not find icon for '{}' at '{}' using fallback icon.", entityType, expectedLocation);
+            return UNKNOWN_ENTITY;
+        }
+    }
+
+    private static ResourceLocation makeExpectedLocation(ResourceLocation entityType) {
         EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(entityType);
         String category = type.getCategory().getName().toLowerCase();
         String path = String.format("textures/entity_icon/%s/%s.png", category, entityType.getPath());

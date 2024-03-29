@@ -6,8 +6,6 @@ import com.tristankechlo.whatdidijustkill.config.types.FormatOption;
 import com.tristankechlo.whatdidijustkill.config.types.ToastTheme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.toasts.Toast;
-import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -20,20 +18,13 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.UUID;
 
-public class PlayerKilledToast implements Toast {
+public class PlayerKilledToast extends AbstractEntityToast {
 
     private static final ResourceLocation UNKNOWN_PLAYER = new ResourceLocation(WhatDidIJustKill.MOD_ID, "textures/player.png");
-
-    private final int displayTime;
-    private final Component firstLine; // not null
-    private final Component secondLine; // might be null
     private final ResourceLocation playerTexture;
-    private final ResourceLocation backgroundTexture;
-    private final boolean textShadow;
 
     private PlayerKilledToast(Component firstLine, Component secondLine, ResourceLocation texture) {
-        this.firstLine = firstLine;
-        this.secondLine = secondLine;
+        super(firstLine, secondLine);
         this.playerTexture = texture;
         this.displayTime = WhatDidIJustKillConfig.get().player().timeout();
         this.backgroundTexture = WhatDidIJustKillConfig.get().player().theme().getBackgroundTexture();
@@ -41,17 +32,7 @@ public class PlayerKilledToast implements Toast {
     }
 
     @Override
-    public Visibility render(GuiGraphics graphics, ToastComponent parent, long displayTime) {
-        graphics.blitSprite(this.backgroundTexture, 0, 0, this.width(), this.height());
-
-        // draw text
-        if (this.secondLine != null) {
-            graphics.drawString(parent.getMinecraft().font, secondLine, 30, 17, 16777215, this.textShadow);
-        }
-        int y = this.secondLine == null ? 12 : 7;
-        graphics.drawString(parent.getMinecraft().font, firstLine, 30, y, 16777215, this.textShadow);
-
-        // draw entity texture
+    protected void renderEntityImage(GuiGraphics graphics) {
         if (this.playerTexture == UNKNOWN_PLAYER) {
             graphics.blit(this.playerTexture, 8, 8, 0, 0, 16, 16, 16, 16);
         } else {
@@ -60,11 +41,6 @@ public class PlayerKilledToast implements Toast {
             graphics.blit(this.playerTexture, 4, 4, 8, 8, 8, 8, 64, 64);
             graphics.pose().pushPose();
         }
-
-        // remove toast when time is over
-        return (double) displayTime >= this.displayTime * parent.getNotificationDisplayTimeMultiplier()
-                ? Visibility.HIDE
-                : Visibility.SHOW;
     }
 
     public static PlayerKilledToast make(UUID uuid, Component entityName, double distance) {
