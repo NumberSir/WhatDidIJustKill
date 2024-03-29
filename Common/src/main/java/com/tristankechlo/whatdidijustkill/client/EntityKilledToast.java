@@ -78,8 +78,8 @@ public class EntityKilledToast implements Toast {
         FormatOption firstLineFormat = WhatDidIJustKillConfig.get().entity().firstLine();
         FormatOption secondLineFormat = WhatDidIJustKillConfig.get().entity().secondLine();
 
-        MutableComponent firstLine = FormatOption.makeLine(theme, firstLineFormat, entityName, entityType, distance);
-        MutableComponent secondLine = FormatOption.makeLine(theme, secondLineFormat, entityName, entityType, distance);
+        MutableComponent firstLine = firstLineFormat.makeLine(theme, entityName, entityType, distance);
+        MutableComponent secondLine = secondLineFormat.makeLine(theme, entityName, entityType, distance);
         return new EntityKilledToast(firstLine, secondLine, entityType);
     }
 
