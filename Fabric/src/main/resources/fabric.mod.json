@@ -16,9 +16,6 @@
     "icon": "icon.png",
     "environment": "*",
     "entrypoints": {
-        "main": [
-            "com.tristankechlo.whatdidijustkill.FabricWhatDidIJustKill"
-        ],
         "client": [
             "com.tristankechlo.whatdidijustkill.FabricWhatDidIJustKillClient"
         ]
