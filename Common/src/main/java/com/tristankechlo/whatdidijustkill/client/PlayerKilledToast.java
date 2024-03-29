@@ -42,12 +42,11 @@ public class PlayerKilledToast implements Toast {
         graphics.blitSprite(BACKGROUND_SPRITE, 0, 0, this.width(), this.height());
 
         // draw text
-        int mainTextY = 12;
         if (this.secondLine != null) {
-            mainTextY = 7;
             graphics.drawString(parent.getMinecraft().font, secondLine, 30, 17, 16777215);
         }
-        graphics.drawString(parent.getMinecraft().font, firstLine, 30, mainTextY, 16777215);
+        int y = this.secondLine == null ? 12 : 7;
+        graphics.drawString(parent.getMinecraft().font, firstLine, 30, y, 16777215);
 
         // draw entity texture
         if (this.texture == UNKNOWN_PLAYER) {

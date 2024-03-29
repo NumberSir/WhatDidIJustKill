@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.tristankechlo.whatdidijustkill.WhatDidIJustKill;
-import com.tristankechlo.whatdidijustkill.command.FabricResponseHelper;
 import com.tristankechlo.whatdidijustkill.config.ConfigManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.ChatFormatting;
@@ -47,7 +46,7 @@ public class FabricWhatDidIJustKillCommand {
     private static int configReset(CommandContext<FabricClientCommandSource> context) {
         FabricClientCommandSource source = context.getSource();
         boolean success = ConfigManager.resetConfig();
-        com.tristankechlo.whatdidijustkill.command.FabricResponseHelper.sendMessageConfigReset(source, success);
+        FabricResponseHelper.sendMessageConfigReset(source, success);
         return 1;
     }
 

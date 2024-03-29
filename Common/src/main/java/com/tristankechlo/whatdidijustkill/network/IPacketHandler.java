@@ -1,7 +1,6 @@
 package com.tristankechlo.whatdidijustkill.network;
 
 import com.tristankechlo.whatdidijustkill.WhatDidIJustKill;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -17,11 +16,9 @@ public interface IPacketHandler {
     void sendPacketEntityKilledByPlayer(ServerPlayer player, ClientBoundEntityKilledPacket packet);
 
     default void sendPacketEntityKilled(ServerPlayer player, Entity killed) {
-        BlockPos pos2 = player.blockPosition();
         Component entityName = killed.getDisplayName();
-        BlockPos pos1 = killed.blockPosition();
         ResourceLocation entityType = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType());
-        double distance = Math.sqrt(pos1.distSqr(pos2));
+        double distance = this.calcDistance(player, killed);
         this.sendPacketEntityKilledByPlayer(player, new ClientBoundEntityKilledPacket(entityName, entityType, distance, killed.hasCustomName()));
     }
 
@@ -30,8 +27,12 @@ public interface IPacketHandler {
     default void sendPacketPlayerKilled(ServerPlayer player, ServerPlayer deadPlayer) {
         Component playerName = deadPlayer.getDisplayName();
         UUID uuid = deadPlayer.getUUID();
-        double distance = Math.sqrt(player.blockPosition().distSqr(deadPlayer.blockPosition()));
+        double distance = this.calcDistance(player, deadPlayer);
         this.sendPacketPlayerKilledByPlayer(player, new ClientBoundPlayerKilledPacket(uuid, playerName, distance));
+    }
+
+    default double calcDistance(Entity entity1, Entity entity2) {
+        return Math.sqrt(entity1.blockPosition().distSqr(entity2.blockPosition()));
     }
 
 }

@@ -13,7 +13,6 @@ public record ClientBoundEntityKilledPacket(Component entityName, ResourceLocati
 
     /* decode for forge and fabric */
     public static void encode(ClientBoundEntityKilledPacket packet, FriendlyByteBuf buffer) {
-        // add data to packet here
         buffer.writeComponent(packet.entityName());
         buffer.writeResourceLocation(packet.entityType());
         buffer.writeDouble(packet.distance());
@@ -22,7 +21,6 @@ public record ClientBoundEntityKilledPacket(Component entityName, ResourceLocati
 
     /* encode for forge and fabric */
     public static ClientBoundEntityKilledPacket decode(FriendlyByteBuf buffer) {
-        // read data from packet
         Component entityName = buffer.readComponent();
         ResourceLocation entityType = buffer.readResourceLocation();
         double distance = buffer.readDouble();

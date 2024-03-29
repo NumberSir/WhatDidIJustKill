@@ -1,5 +1,4 @@
-package com.tristankechlo.whatdidijustkill.command;
-
+package com.tristankechlo.whatdidijustkill.fabric_command;
 
 import com.tristankechlo.whatdidijustkill.WhatDidIJustKill;
 import com.tristankechlo.whatdidijustkill.config.ConfigManager;
