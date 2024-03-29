@@ -27,15 +27,15 @@ public enum FormatOption implements StringRepresentable {
         return this.key;
     }
 
-    public static MutableComponent makeLine(FormatOption option, Component entityName, ResourceLocation entityType, double distance) {
+    public static MutableComponent makeLine(ToastTheme theme, FormatOption option, Component entityName, ResourceLocation entityType, double distance) {
         if (option == KILLED) {
-            return Component.translatable("screen.whatdidijustkill.killed", entityName).withStyle(ChatFormatting.GRAY);
+            return Component.translatable("screen.whatdidijustkill.killed", entityName).withStyle(theme.getColorText());
         } else if (option == KILLED_DISTANCE) {
-            return Component.translatable("screen.whatdidijustkill.killed.distance", entityName, distance).withStyle(ChatFormatting.GRAY);
+            return Component.translatable("screen.whatdidijustkill.killed.distance", entityName, distance).withStyle(theme.getColorText());
         } else if (option == DISTANCE) {
-            return Component.translatable("screen.whatdidijustkill.distance", distance).withStyle(ChatFormatting.GRAY);
+            return Component.translatable("screen.whatdidijustkill.distance", distance).withStyle(theme.getColorText());
         } else if (option == ENTITY_TYPE) {
-            return Component.literal(entityType.toString()).withStyle(ChatFormatting.DARK_GRAY);
+            return Component.literal(entityType.toString()).withStyle(theme.getColorEntityType());
         }
         return null;
     }

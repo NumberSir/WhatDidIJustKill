@@ -12,9 +12,10 @@ import net.minecraft.util.StringRepresentable;
 import java.util.List;
 import java.util.Optional;
 
-public record EntityOptions(ShowToastOption showToast, int timeout, FormatOption firstLine, FormatOption secondLine, List<Either<ResourceLocation, ModWildcard>> excludes) {
+public record EntityOptions(ShowToastOption showToast, int timeout, FormatOption firstLine, FormatOption secondLine,
+                            ToastTheme theme, List<Either<ResourceLocation, ModWildcard>> excludes) {
 
-    public static final EntityOptions DEFAULT = new EntityOptions(ShowToastOption.NOT_EXCLUDED, 2000, FormatOption.KILLED_DISTANCE, FormatOption.ENTITY_TYPE, List.of(Either.left(new ResourceLocation("bat"))));
+    public static final EntityOptions DEFAULT = new EntityOptions(ShowToastOption.NOT_EXCLUDED, 2000, FormatOption.KILLED_DISTANCE, FormatOption.ENTITY_TYPE, ToastTheme.ADVANCEMENT, List.of(Either.left(new ResourceLocation("bat"))));
 
     public static final Codec<EntityOptions> CODEC = ExtraCodecs.validate(RecordCodecBuilder.create(
             instance -> instance.group(
@@ -22,6 +23,7 @@ public record EntityOptions(ShowToastOption showToast, int timeout, FormatOption
                     Codec.intRange(250, 20000).fieldOf("timeout").forGetter(EntityOptions::timeout),
                     FormatOption.CODEC.fieldOf("first_line").forGetter(EntityOptions::firstLine),
                     FormatOption.CODEC.fieldOf("second_line").forGetter(EntityOptions::secondLine),
+                    ToastTheme.CODEC.fieldOf("theme").forGetter(EntityOptions::theme),
                     Codec.either(ResourceLocation.CODEC, ModWildcard.CODEC).listOf().fieldOf("excludes").forGetter(EntityOptions::excludes)
             ).apply(instance, EntityOptions::new)
     ), EntityOptions::verify);

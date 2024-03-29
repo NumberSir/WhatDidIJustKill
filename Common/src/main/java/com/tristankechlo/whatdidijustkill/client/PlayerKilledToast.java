@@ -3,7 +3,7 @@ package com.tristankechlo.whatdidijustkill.client;
 import com.tristankechlo.whatdidijustkill.WhatDidIJustKill;
 import com.tristankechlo.whatdidijustkill.config.WhatDidIJustKillConfig;
 import com.tristankechlo.whatdidijustkill.config.types.FormatOption;
-import net.minecraft.ChatFormatting;
+import com.tristankechlo.whatdidijustkill.config.types.ToastTheme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.Toast;
@@ -22,39 +22,42 @@ import java.util.UUID;
 
 public class PlayerKilledToast implements Toast {
 
-    private static final ResourceLocation BACKGROUND_SPRITE = new ResourceLocation("toast/advancement");
     private static final ResourceLocation UNKNOWN_PLAYER = new ResourceLocation(WhatDidIJustKill.MOD_ID, "textures/player.png");
 
     private final int displayTime;
     private final Component firstLine; // not null
     private final Component secondLine; // might be null
-    private final ResourceLocation texture;
+    private final ResourceLocation playerTexture;
+    private final ResourceLocation backgroundTexture;
+    private final boolean textShadow;
 
     private PlayerKilledToast(Component firstLine, Component secondLine, ResourceLocation texture) {
         this.firstLine = firstLine;
         this.secondLine = secondLine;
-        this.texture = texture;
+        this.playerTexture = texture;
         this.displayTime = WhatDidIJustKillConfig.get().player().timeout();
+        this.backgroundTexture = WhatDidIJustKillConfig.get().player().theme().getBackgroundTexture();
+        this.textShadow = WhatDidIJustKillConfig.get().player().theme() == ToastTheme.ADVANCEMENT;
     }
 
     @Override
     public Visibility render(GuiGraphics graphics, ToastComponent parent, long displayTime) {
-        graphics.blitSprite(BACKGROUND_SPRITE, 0, 0, this.width(), this.height());
+        graphics.blitSprite(this.backgroundTexture, 0, 0, this.width(), this.height());
 
         // draw text
         if (this.secondLine != null) {
-            graphics.drawString(parent.getMinecraft().font, secondLine, 30, 17, 16777215);
+            graphics.drawString(parent.getMinecraft().font, secondLine, 30, 17, 16777215, this.textShadow);
         }
         int y = this.secondLine == null ? 12 : 7;
-        graphics.drawString(parent.getMinecraft().font, firstLine, 30, y, 16777215);
+        graphics.drawString(parent.getMinecraft().font, firstLine, 30, y, 16777215, this.textShadow);
 
         // draw entity texture
-        if (this.texture == UNKNOWN_PLAYER) {
-            graphics.blit(this.texture, 8, 8, 0, 0, 16, 16, 16, 16);
+        if (this.playerTexture == UNKNOWN_PLAYER) {
+            graphics.blit(this.playerTexture, 8, 8, 0, 0, 16, 16, 16, 16);
         } else {
             graphics.pose().pushPose();
             graphics.pose().scale(2, 2, 2);
-            graphics.blit(this.texture, 4, 4, 8, 8, 8, 8, 64, 64);
+            graphics.blit(this.playerTexture, 4, 4, 8, 8, 8, 8, 64, 64);
             graphics.pose().pushPose();
         }
 
@@ -65,8 +68,10 @@ public class PlayerKilledToast implements Toast {
     }
 
     public static PlayerKilledToast make(UUID uuid, Component entityName, double distance) {
+        ToastTheme theme = WhatDidIJustKillConfig.get().player().theme();
+
         if (entityName.getStyle().getColor() == null) {
-            entityName = entityName.copy().withStyle(ChatFormatting.WHITE);
+            entityName = entityName.copy().withStyle(theme.getColorHighlight());
         }
         distance = ((double) Mth.floor(distance * 10)) / 10.0D;
         ResourceLocation entityType = BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.PLAYER);
@@ -75,8 +80,8 @@ public class PlayerKilledToast implements Toast {
         FormatOption firstLineFormat = WhatDidIJustKillConfig.get().player().firstLine();
         FormatOption secondLineFormat = WhatDidIJustKillConfig.get().player().secondLine();
 
-        MutableComponent firstLine = FormatOption.makeLine(firstLineFormat, entityName, entityType, distance);
-        MutableComponent secondLine = FormatOption.makeLine(secondLineFormat, entityName, entityType, distance);
+        MutableComponent firstLine = FormatOption.makeLine(theme, firstLineFormat, entityName, entityType, distance);
+        MutableComponent secondLine = FormatOption.makeLine(theme, secondLineFormat, entityName, entityType, distance);
         return new PlayerKilledToast(firstLine, secondLine, texture);
     }
 
