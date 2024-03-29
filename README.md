@@ -8,4 +8,6 @@
 
 ### displays a small toast with information about the mob you just killed
 
-\<insert image here>
+## Examples
+
+

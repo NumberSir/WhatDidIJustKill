@@ -1,9 +1,7 @@
 package com.tristankechlo.whatdidijustkill.network;
 
-import com.tristankechlo.whatdidijustkill.client.PlayerKilledToast;
+import com.tristankechlo.whatdidijustkill.client.ToastHandler;
 import com.tristankechlo.whatdidijustkill.config.WhatDidIJustKillConfig;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 
@@ -31,9 +29,7 @@ public record ClientBoundPlayerKilledPacket(UUID uuid, Component playerName, dou
         if (!WhatDidIJustKillConfig.get().player().showToast()) {
             return;
         }
-
-        final ToastComponent toastManager = Minecraft.getInstance().getToasts();
-        toastManager.addToast(PlayerKilledToast.make(packet.uuid, packet.playerName, packet.distance));
+        ToastHandler.showToastPlayer(packet.uuid, packet.playerName, packet.distance);
     }
 
 }

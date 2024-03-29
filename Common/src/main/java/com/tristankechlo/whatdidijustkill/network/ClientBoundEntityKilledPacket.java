@@ -1,10 +1,8 @@
 package com.tristankechlo.whatdidijustkill.network;
 
-import com.tristankechlo.whatdidijustkill.client.EntityKilledToast;
+import com.tristankechlo.whatdidijustkill.client.ToastHandler;
 import com.tristankechlo.whatdidijustkill.config.WhatDidIJustKillConfig;
 import com.tristankechlo.whatdidijustkill.config.types.EntityOptions;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -37,18 +35,7 @@ public record ClientBoundEntityKilledPacket(Component entityName, ResourceLocati
         if (WhatDidIJustKillConfig.get().entity().isEntityExcluded(packet.entityType)) {
             return;
         }
-
-        final boolean showOnlyMobsWithSpecialNames = WhatDidIJustKillConfig.get().entity().showToast() == EntityOptions.ShowToastOption.ONLY_NAMED;
-        final ToastComponent toastManager = Minecraft.getInstance().getToasts();
-
-        if (showOnlyMobsWithSpecialNames) {
-            if (packet.hasSpecialName()) {
-                // only show mobs with special names
-                toastManager.addToast(EntityKilledToast.make(packet.entityName(), packet.entityType(), packet.distance()));
-            }
-        } else {
-            toastManager.addToast(EntityKilledToast.make(packet.entityName(), packet.entityType(), packet.distance()));
-        }
+        ToastHandler.showToastEntity(packet.entityName, packet.entityType, packet.distance, packet.hasSpecialName);
     }
 
 }
