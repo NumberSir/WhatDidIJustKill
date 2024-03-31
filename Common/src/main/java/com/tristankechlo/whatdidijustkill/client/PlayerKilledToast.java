@@ -43,7 +43,7 @@ public class PlayerKilledToast extends AbstractEntityToast {
             poseStack.scale(2, 2, 2);
             RenderSystem.setShaderTexture(0, this.playerTexture);
             GuiComponent.blit(poseStack, 4, 4, 8, 8, 8, 8, 64, 64);
-            poseStack.pushPose();
+            poseStack.popPose();
         }
     }
 
