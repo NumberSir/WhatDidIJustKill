@@ -10,7 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -65,7 +65,7 @@ public class EntityKilledToast extends AbstractEntityToast {
     }
 
     private static ResourceLocation makeExpectedLocation(ResourceLocation entityType) {
-        EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(entityType);
+        EntityType<?> type = Registry.ENTITY_TYPE.get(entityType);
         String category = type.getCategory().getName().toLowerCase();
         String path = String.format("textures/entity_icon/%s/%s.png", category, entityType.getPath());
         return new ResourceLocation(entityType.getNamespace(), path);

@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.UUID;
@@ -19,9 +20,9 @@ public class ToastHandler {
     public static void toggleVisibility(Minecraft instance) {
         toastsEnabled = !toastsEnabled;
         MutableComponent start = ResponseHelper.start();
-        MutableComponent message = Component.translatable("key.whatdidijustkill.toggle_toasts." + (toastsEnabled ? "enabled" : "disabled"));
+        MutableComponent message = new TranslatableComponent("key.whatdidijustkill.toggle_toasts." + (toastsEnabled ? "enabled" : "disabled"));
         if (instance.player != null) {
-            instance.player.sendSystemMessage(start.append(message.withStyle(ChatFormatting.WHITE)));
+            instance.player.sendMessage(start.append(message.withStyle(ChatFormatting.WHITE)), null);
         }
         instance.options.save();
     }

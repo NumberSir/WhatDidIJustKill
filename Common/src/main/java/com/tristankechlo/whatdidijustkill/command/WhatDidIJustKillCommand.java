@@ -9,6 +9,7 @@ import com.tristankechlo.whatdidijustkill.config.ConfigManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 
 import static net.minecraft.commands.Commands.literal;
 
@@ -53,7 +54,7 @@ public class WhatDidIJustKillCommand {
     private static int github(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
         Component link = ResponseHelper.clickableLink(WhatDidIJustKill.GITHUB_URL);
-        Component message = Component.literal("Check out the source code on GitHub: ").withStyle(ChatFormatting.WHITE).append(link);
+        Component message = new TextComponent("Check out the source code on GitHub: ").withStyle(ChatFormatting.WHITE).append(link);
         ResponseHelper.sendMessage(source, message, false);
         return 1;
     }
@@ -61,7 +62,7 @@ public class WhatDidIJustKillCommand {
     private static int issue(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
         Component link = ResponseHelper.clickableLink(WhatDidIJustKill.GITHUB_ISSUE_URL);
-        Component message = Component.literal("If you found an issue, submit it here: ").withStyle(ChatFormatting.WHITE).append(link);
+        Component message = new TextComponent("If you found an issue, submit it here: ").withStyle(ChatFormatting.WHITE).append(link);
         ResponseHelper.sendMessage(source, message, false);
         return 1;
     }
@@ -69,7 +70,7 @@ public class WhatDidIJustKillCommand {
     private static int wiki(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
         Component link = ResponseHelper.clickableLink(WhatDidIJustKill.GITHUB_WIKI_URL);
-        Component message = Component.literal("The wiki can be found here: ").withStyle(ChatFormatting.WHITE).append(link);
+        Component message = new TextComponent("The wiki can be found here: ").withStyle(ChatFormatting.WHITE).append(link);
         ResponseHelper.sendMessage(source, message, false);
         return 1;
     }
@@ -77,7 +78,7 @@ public class WhatDidIJustKillCommand {
     private static int discord(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
         Component link = ResponseHelper.clickableLink(WhatDidIJustKill.DISCORD_URL);
-        Component message = Component.literal("Join the Discord here: ").withStyle(ChatFormatting.WHITE).append(link);
+        Component message = new TextComponent("Join the Discord here: ").withStyle(ChatFormatting.WHITE).append(link);
         ResponseHelper.sendMessage(source, message, false);
         return 1;
     }
@@ -85,7 +86,7 @@ public class WhatDidIJustKillCommand {
     private static int curseforge(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
         Component link = ResponseHelper.clickableLink(WhatDidIJustKill.CURSEFORGE_URL);
-        Component message = Component.literal("Check out the CurseForge page here: ").withStyle(ChatFormatting.WHITE).append(link);
+        Component message = new TextComponent("Check out the CurseForge page here: ").withStyle(ChatFormatting.WHITE).append(link);
         ResponseHelper.sendMessage(source, message, false);
         return 1;
     }
@@ -93,7 +94,7 @@ public class WhatDidIJustKillCommand {
     private static int modrinth(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
         Component link = ResponseHelper.clickableLink(WhatDidIJustKill.MODRINTH_URL);
-        Component message = Component.literal("Check out the Modrinth page here: ").withStyle(ChatFormatting.WHITE).append(link);
+        Component message = new TextComponent("Check out the Modrinth page here: ").withStyle(ChatFormatting.WHITE).append(link);
         ResponseHelper.sendMessage(source, message, false);
         return 1;
     }

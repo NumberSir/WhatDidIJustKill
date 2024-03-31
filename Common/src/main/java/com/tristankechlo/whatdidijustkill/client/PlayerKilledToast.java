@@ -10,7 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -54,7 +54,7 @@ public class PlayerKilledToast extends AbstractEntityToast {
             entityName = entityName.copy().withStyle(theme.getColorHighlight());
         }
         distance = ((double) Mth.floor(distance * 10)) / 10.0D;
-        ResourceLocation entityType = BuiltInRegistries.ENTITY_TYPE.getKey(EntityType.PLAYER);
+        ResourceLocation entityType = Registry.ENTITY_TYPE.getKey(EntityType.PLAYER);
         ResourceLocation texture = getTextureLocation(uuid);
 
         FormatOption firstLineFormat = WhatDidIJustKillConfig.get().player().firstLine();

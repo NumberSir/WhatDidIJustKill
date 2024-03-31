@@ -8,8 +8,11 @@ import com.tristankechlo.whatdidijustkill.IPlatformHelper;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public record EntityOptions(ShowToastOption showToast, int timeout, FormatOption firstLine, FormatOption secondLine,
                             ToastTheme theme, List<Either<ResourceLocation, ModWildcard>> excludes) {
@@ -56,7 +59,8 @@ public record EntityOptions(ShowToastOption showToast, int timeout, FormatOption
         NOT_EXCLUDED("NOT_EXCLUDED"), // only show toast for mobs that are not in the exclude list
         NONE("NONE"); // no toast
 
-        public static final Codec<ShowToastOption> CODEC = StringRepresentable.fromEnum(ShowToastOption::values);
+        public static final Codec<ShowToastOption> CODEC = StringRepresentable.fromEnum(ShowToastOption::values, ShowToastOption::byName);
+        private static final Map<String, ShowToastOption> BY_NAME = Arrays.stream(values()).collect(Collectors.toMap(ShowToastOption::getSerializedName, ($$0) -> $$0));
         private final String key;
 
         ShowToastOption(String key) {
@@ -66,6 +70,10 @@ public record EntityOptions(ShowToastOption showToast, int timeout, FormatOption
         @Override
         public String getSerializedName() {
             return this.key;
+        }
+
+        public static ShowToastOption byName(String key) {
+            return BY_NAME.get(key);
         }
     }
 

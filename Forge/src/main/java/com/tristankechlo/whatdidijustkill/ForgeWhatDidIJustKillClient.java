@@ -6,7 +6,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,11 +22,7 @@ public class ForgeWhatDidIJustKillClient {
     @SubscribeEvent
     public static void clientSetup(final FMLClientSetupEvent event) {
         ConfigManager.loadAndVerifyConfig();
-    }
-
-    @SubscribeEvent
-    public static void registerBindings(RegisterKeyMappingsEvent event) {
-        event.register(KEYMAPPING.get());
+        ClientRegistry.registerKeyBinding(KEYMAPPING.get());
     }
 
     @Mod.EventBusSubscriber(modid = WhatDidIJustKill.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)

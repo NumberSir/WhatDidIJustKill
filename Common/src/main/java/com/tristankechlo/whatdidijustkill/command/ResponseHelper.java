@@ -8,29 +8,30 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 
 public final class ResponseHelper {
 
     public static void sendMessageConfigShow(CommandSourceStack source) {
         MutableComponent clickableFile = clickableConfig();
-        MutableComponent message = Component.literal("Config-file can be found here: ").append(clickableFile);
+        MutableComponent message = new TextComponent("Config-file can be found here: ").append(clickableFile);
         sendMessage(source, message.withStyle(ChatFormatting.WHITE), false);
     }
 
     public static void sendMessageConfigReload(CommandSourceStack source, boolean success) {
         String text = success ? "Config was successfully reloaded." : "Error while reloading config. Check the logs for further details.";
-        MutableComponent message = Component.literal(text).withStyle(ChatFormatting.WHITE);
+        MutableComponent message = new TextComponent(text).withStyle(ChatFormatting.WHITE);
         sendMessage(source, message, true);
     }
 
     public static void sendMessageConfigReset(CommandSourceStack source, boolean success) {
         String text = success ? "Config was successfully reset." : "Error while saving the default config.";
-        MutableComponent message = Component.literal(text).withStyle(ChatFormatting.WHITE);
+        MutableComponent message = new TextComponent(text).withStyle(ChatFormatting.WHITE);
         sendMessage(source, message, true);
     }
 
     public static MutableComponent start() {
-        return Component.literal("[" + WhatDidIJustKill.MOD_NAME + "] ").withStyle(ChatFormatting.GOLD);
+        return new TextComponent("[" + WhatDidIJustKill.MOD_NAME + "] ").withStyle(ChatFormatting.GOLD);
     }
 
     public static void sendMessage(CommandSourceStack source, Component message, boolean broadcastToOps) {
@@ -41,14 +42,14 @@ public final class ResponseHelper {
     public static MutableComponent clickableConfig() {
         String fileName = ConfigManager.FILE_NAME;
         String filePath = ConfigManager.getConfigPath();
-        MutableComponent mutableComponent = Component.literal(fileName);
+        MutableComponent mutableComponent = new TextComponent(fileName);
         mutableComponent.withStyle(ChatFormatting.GREEN, ChatFormatting.UNDERLINE);
         mutableComponent.withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, filePath)));
         return mutableComponent;
     }
 
     public static MutableComponent clickableLink(String url, String displayText) {
-        MutableComponent mutableComponent = Component.literal(displayText);
+        MutableComponent mutableComponent = new TextComponent(displayText);
         mutableComponent.withStyle(ChatFormatting.GREEN, ChatFormatting.UNDERLINE);
         mutableComponent.withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
         return mutableComponent;

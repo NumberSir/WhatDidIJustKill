@@ -1,7 +1,7 @@
 package com.tristankechlo.whatdidijustkill.network;
 
 import com.tristankechlo.whatdidijustkill.WhatDidIJustKill;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,7 +17,7 @@ public interface IPacketHandler {
 
     default void sendPacketEntityKilled(ServerPlayer player, Entity killed) {
         Component entityName = killed.getDisplayName();
-        ResourceLocation entityType = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType());
+        ResourceLocation entityType = Registry.ENTITY_TYPE.getKey(killed.getType());
         double distance = this.calcDistance(player, killed);
         this.sendPacketEntityKilledByPlayer(player, new ClientBoundEntityKilledPacket(entityName, entityType, distance, killed.hasCustomName()));
     }

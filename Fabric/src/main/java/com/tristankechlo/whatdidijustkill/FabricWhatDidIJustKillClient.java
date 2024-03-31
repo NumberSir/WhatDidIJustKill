@@ -1,14 +1,14 @@
 package com.tristankechlo.whatdidijustkill;
 
 import com.tristankechlo.whatdidijustkill.client.ToastHandler;
+import com.tristankechlo.whatdidijustkill.command.WhatDidIJustKillCommand;
 import com.tristankechlo.whatdidijustkill.config.ConfigManager;
-import com.tristankechlo.whatdidijustkill.fabric_command.FabricWhatDidIJustKillCommand;
 import com.tristankechlo.whatdidijustkill.network.FabricPacketHandler;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -31,8 +31,10 @@ public class FabricWhatDidIJustKillClient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(WhatDidIJustKill.PLAYER_KILLED, FabricPacketHandler::handlePlayerKilled);
 
         // register mod command
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            FabricWhatDidIJustKillCommand.register(dispatcher);
+        CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
+            if (!dedicated) {
+                WhatDidIJustKillCommand.register(dispatcher);
+            }
         });
     }
 

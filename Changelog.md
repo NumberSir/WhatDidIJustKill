@@ -1,8 +1,8 @@
 # Changelog
 
-### Version 1.19.3 - 1.1.0
+### Version 1.18.2 - 1.1.0
 
-- backport to 1.19.3
+- backport to 1.18.2
 
 ### Version 1.20.4 - 1.1.0
 
