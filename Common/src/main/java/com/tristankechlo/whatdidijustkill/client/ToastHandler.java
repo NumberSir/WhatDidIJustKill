@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class ToastHandler {
 
-    public static boolean toastsEnabled = true; // TODO save somewhere
+    public static boolean toastsEnabled = true;
 
     public static void toggleVisibility(Minecraft instance) {
         toastsEnabled = !toastsEnabled;
@@ -23,6 +23,7 @@ public class ToastHandler {
         if (instance.player != null) {
             instance.player.sendSystemMessage(start.append(message.withStyle(ChatFormatting.WHITE)));
         }
+        instance.options.save();
     }
 
     public static void showToastEntity(Component entityName, ResourceLocation entityType, double distance, boolean hasSpecialName) {

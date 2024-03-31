@@ -20,6 +20,7 @@
             "com.tristankechlo.whatdidijustkill.FabricWhatDidIJustKillClient"
         ]
     },
+    "accessWidener": "whatdidijustkill.accesswidener",
     "mixins": [
         "whatdidijustkill.mixins.json"
     ],
