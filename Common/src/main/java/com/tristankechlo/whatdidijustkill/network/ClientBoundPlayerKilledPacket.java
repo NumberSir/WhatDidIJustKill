@@ -1,7 +1,6 @@
 package com.tristankechlo.whatdidijustkill.network;
 
 import com.tristankechlo.whatdidijustkill.client.ToastHandler;
-import com.tristankechlo.whatdidijustkill.config.WhatDidIJustKillConfig;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 
@@ -26,9 +25,6 @@ public record ClientBoundPlayerKilledPacket(UUID uuid, Component playerName, dou
 
     /* handle the packet; forge, fabric and neoforge */
     public static void handle(ClientBoundPlayerKilledPacket packet) {
-        if (!WhatDidIJustKillConfig.get().player().showToast()) {
-            return;
-        }
         ToastHandler.showToastPlayer(packet.uuid, packet.playerName, packet.distance);
     }
 

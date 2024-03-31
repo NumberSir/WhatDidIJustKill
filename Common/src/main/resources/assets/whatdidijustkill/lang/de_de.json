@@ -1,5 +1,8 @@
 {
     "screen.whatdidijustkill.killed": "%s getötet",
     "screen.whatdidijustkill.killed.distance": "%s getötet (%sm)",
-    "screen.whatdidijustkill.distance": "Entfernung: %sm"
+    "screen.whatdidijustkill.distance": "Entfernung: %sm",
+    "key.whatdidijustkill.toggle_toasts": "[WDIJK] Toast Sichtbarkeit ändern",
+    "key.whatdidijustkill.toggle_toasts.enabled": "Alle Toasts werden nun angezeigt",
+    "key.whatdidijustkill.toggle_toasts.disabled": "Alle Toasts werden nun versteckt"
 }

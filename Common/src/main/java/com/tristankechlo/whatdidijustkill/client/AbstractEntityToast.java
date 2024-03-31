@@ -22,6 +22,10 @@ public abstract class AbstractEntityToast implements Toast {
 
     @Override
     public Visibility render(GuiGraphics graphics, ToastComponent parent, long displayTime) {
+        if (!ToastHandler.toastsEnabled) {
+            return Visibility.HIDE;
+        }
+
         // render background texture
         graphics.blitSprite(this.backgroundTexture, 0, 0, this.width(), this.height());
 
