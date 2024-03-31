@@ -28,4 +28,3 @@ rootProject.name = 'WhatDidIJustKill'
 include("Common")
 include("Fabric")
 include("Forge")
-include("Neoforge")
