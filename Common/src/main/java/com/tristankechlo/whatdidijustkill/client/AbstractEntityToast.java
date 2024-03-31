@@ -29,7 +29,7 @@ public abstract class AbstractEntityToast implements Toast {
 
         // render background texture
         RenderSystem.setShaderTexture(0, TEXTURE);
-        GuiComponent.blit(poseStack, 0, 0, 0, this.backgroundTextureOffsetY, this.width(), this.height());
+        GuiComponent.blit(poseStack, 0, 0, 0, this.backgroundTextureOffsetY, this.width(), this.height(), 256, 256);
 
         // draw entity texture
         this.renderEntityImage(poseStack);
@@ -48,9 +48,7 @@ public abstract class AbstractEntityToast implements Toast {
         parent.getMinecraft().font.draw(poseStack, this.firstLine, 30, y, 16777215);
 
         // remove toast when time is over
-        return (double) displayTime >= this.displayTime * parent.getNotificationDisplayTimeMultiplier()
-                ? Visibility.HIDE
-                : Visibility.SHOW;
+        return (double) displayTime >= this.displayTime ? Visibility.HIDE : Visibility.SHOW;
     }
 
     protected abstract void renderEntityImage(PoseStack graphics);
