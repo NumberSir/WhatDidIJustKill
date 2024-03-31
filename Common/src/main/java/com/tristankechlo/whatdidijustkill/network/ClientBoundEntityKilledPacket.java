@@ -24,7 +24,7 @@ public record ClientBoundEntityKilledPacket(Component entityName, ResourceLocati
         return new ClientBoundEntityKilledPacket(entityName, entityType, distance, hasCustomName);
     }
 
-    /* handle the packet; forge, fabric and neoforge */
+    /* handle the packet; forge and fabric */
     public static void handle(ClientBoundEntityKilledPacket packet) {
         ToastHandler.showToastEntity(packet.entityName, packet.entityType, packet.distance, packet.hasSpecialName);
     }

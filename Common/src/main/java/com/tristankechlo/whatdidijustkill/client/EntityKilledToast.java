@@ -1,11 +1,13 @@
 package com.tristankechlo.whatdidijustkill.client;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.whatdidijustkill.WhatDidIJustKill;
 import com.tristankechlo.whatdidijustkill.config.WhatDidIJustKillConfig;
 import com.tristankechlo.whatdidijustkill.config.types.FormatOption;
 import com.tristankechlo.whatdidijustkill.config.types.ToastTheme;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -24,14 +26,15 @@ public class EntityKilledToast extends AbstractEntityToast {
         super(firstLine, secondLine);
         this.entityTexture = getTextureLocationSafe(entityType);
         this.displayTime = WhatDidIJustKillConfig.get().entity().timeout();
-        this.backgroundTexture = WhatDidIJustKillConfig.get().entity().theme().getBackgroundTexture();
+        this.backgroundTextureOffsetY = WhatDidIJustKillConfig.get().entity().theme().getOffsetY();
         this.textShadow = WhatDidIJustKillConfig.get().entity().theme() == ToastTheme.ADVANCEMENT;
     }
 
     @Override
-    protected void renderEntityImage(GuiGraphics graphics) {
+    protected void renderEntityImage(PoseStack poseStack) {
         // TODO allow textures with different sizes
-        graphics.blit(this.entityTexture, 8, 8, 0, 0, 16, 16, 16, 16);
+        RenderSystem.setShaderTexture(0, this.entityTexture);
+        GuiComponent.blit(poseStack, 8, 8, 0, 0, 16, 16, 16, 16);
     }
 
     public static EntityKilledToast make(Component entityName, ResourceLocation entityType, double distance) {

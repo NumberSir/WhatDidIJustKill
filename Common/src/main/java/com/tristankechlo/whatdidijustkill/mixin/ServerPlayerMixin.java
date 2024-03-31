@@ -15,7 +15,7 @@ public abstract class ServerPlayerMixin {
     @Inject(method = "die", at = @At("HEAD"))
     private void onDeath$WhatDidIJustKill(DamageSource source, CallbackInfo ci) {
         ServerPlayer self = ((ServerPlayer) (Object) this);
-        if (self.isRemoved() || self.level().isClientSide()) {
+        if (self.isRemoved() || self.getLevel().isClientSide()) {
             return;
         }
 

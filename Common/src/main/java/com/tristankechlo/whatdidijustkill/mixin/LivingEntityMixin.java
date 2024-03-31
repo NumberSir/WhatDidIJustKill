@@ -23,7 +23,7 @@ public abstract class LivingEntityMixin {
     @Inject(method = "die", at = @At("HEAD"))
     private void onDeath$WhatDidIJustKill(DamageSource source, CallbackInfo ci) {
         LivingEntity self = ((LivingEntity) (Object) this);
-        if (self.isRemoved() || this.dead || self.level().isClientSide()) {
+        if (self.isRemoved() || this.dead || self.getLevel().isClientSide()) {
             return;
         }
 

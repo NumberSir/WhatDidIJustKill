@@ -1,11 +1,13 @@
 package com.tristankechlo.whatdidijustkill.client;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.tristankechlo.whatdidijustkill.WhatDidIJustKill;
 import com.tristankechlo.whatdidijustkill.config.WhatDidIJustKillConfig;
 import com.tristankechlo.whatdidijustkill.config.types.FormatOption;
 import com.tristankechlo.whatdidijustkill.config.types.ToastTheme;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -27,19 +29,21 @@ public class PlayerKilledToast extends AbstractEntityToast {
         super(firstLine, secondLine);
         this.playerTexture = texture;
         this.displayTime = WhatDidIJustKillConfig.get().player().timeout();
-        this.backgroundTexture = WhatDidIJustKillConfig.get().player().theme().getBackgroundTexture();
+        this.backgroundTextureOffsetY = WhatDidIJustKillConfig.get().player().theme().getOffsetY();
         this.textShadow = WhatDidIJustKillConfig.get().player().theme() == ToastTheme.ADVANCEMENT;
     }
 
     @Override
-    protected void renderEntityImage(GuiGraphics graphics) {
+    protected void renderEntityImage(PoseStack poseStack) {
         if (this.playerTexture == UNKNOWN_PLAYER) {
-            graphics.blit(this.playerTexture, 8, 8, 0, 0, 16, 16, 16, 16);
+            RenderSystem.setShaderTexture(0, this.playerTexture);
+            GuiComponent.blit(poseStack, 8, 8, 0, 0, 16, 16, 16, 16);
         } else {
-            graphics.pose().pushPose();
-            graphics.pose().scale(2, 2, 2);
-            graphics.blit(this.playerTexture, 4, 4, 8, 8, 8, 8, 64, 64);
-            graphics.pose().pushPose();
+            poseStack.pushPose();
+            poseStack.scale(2, 2, 2);
+            RenderSystem.setShaderTexture(0, this.playerTexture);
+            GuiComponent.blit(poseStack, 4, 4, 8, 8, 8, 8, 64, 64);
+            poseStack.pushPose();
         }
     }
 
@@ -68,7 +72,7 @@ public class PlayerKilledToast extends AbstractEntityToast {
         }
         Player player = level.getPlayerByUUID(uuid);
         if (player instanceof AbstractClientPlayer p) {
-            return p.getSkin().texture();
+            return p.getSkinTextureLocation();
         }
         return UNKNOWN_PLAYER;
     }

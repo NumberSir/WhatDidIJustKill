@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 1.19.4 - 1.1.0
+
+- backport to 1.19.4
+
 ### Version 1.20.4 - 1.1.0
 
 - allow different styles as toasts

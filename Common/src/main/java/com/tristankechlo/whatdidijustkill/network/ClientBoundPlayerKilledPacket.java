@@ -23,7 +23,7 @@ public record ClientBoundPlayerKilledPacket(UUID uuid, Component playerName, dou
         return new ClientBoundPlayerKilledPacket(uuid, entityName, distance);
     }
 
-    /* handle the packet; forge, fabric and neoforge */
+    /* handle the packet; forge and fabric */
     public static void handle(ClientBoundPlayerKilledPacket packet) {
         ToastHandler.showToastPlayer(packet.uuid, packet.playerName, packet.distance);
     }
