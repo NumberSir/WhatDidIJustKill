@@ -30,21 +30,17 @@ public class ToastHandler {
         if (!toastsEnabled || WhatDidIJustKillConfig.get().entity().showToast() == EntityOptions.ShowToastOption.NONE) {
             return;
         }
-        if (WhatDidIJustKillConfig.get().entity().isEntityExcluded(entityType)) {
+
+        EntityOptions.ShowToastOption visibility = WhatDidIJustKillConfig.get().entity().showToast();
+        if (visibility == EntityOptions.ShowToastOption.ONLY_NAMED && !hasSpecialName) {
+            return;
+        }
+        if (visibility == EntityOptions.ShowToastOption.NOT_EXCLUDED && WhatDidIJustKillConfig.get().entity().isEntityExcluded(entityType)) {
             return;
         }
 
-        final boolean showOnlyMobsWithSpecialNames = WhatDidIJustKillConfig.get().entity().showToast() == EntityOptions.ShowToastOption.ONLY_NAMED;
         final ToastComponent toastManager = Minecraft.getInstance().getToasts();
-
-        if (showOnlyMobsWithSpecialNames) {
-            if (hasSpecialName) {
-                // only show mobs with special names
-                toastManager.addToast(EntityKilledToast.make(entityName, entityType, distance));
-            }
-        } else {
-            toastManager.addToast(EntityKilledToast.make(entityName, entityType, distance));
-        }
+        toastManager.addToast(EntityKilledToast.make(entityName, entityType, distance));
     }
 
     public static void showToastPlayer(UUID uuid, Component playerName, double distance) {
