@@ -1,3 +1,6 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
 plugins {
     // Required for NeoGradle
     id "org.jetbrains.gradle.plugin.idea-ext" version "1.1.7"
@@ -43,5 +46,14 @@ subprojects {
 
     tasks.withType(GenerateModuleMetadata) {
         enabled = false
+    }
+
+    //minify json files
+    processResources {
+        doLast {
+            fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
+                File file -> file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+            }
+        }
     }
 }
