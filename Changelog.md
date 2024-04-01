@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 1.19.3 - 1.1.1
+
+- use kill credit to determine who killed the mob/player
+    - toast now shows when enemy died in lava while fighting
+    - also shows toast when enemy dies to fall damage while fighting
+
 ### Version 1.19.3 - 1.1.0
 
 - backport to 1.19.3
