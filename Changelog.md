@@ -1,8 +1,9 @@
 # Changelog
 
-### Version 1.20.6 - 1.1.1
+### Version 1.20.6 - 1.1.2
 
 - port to 1.20.6
+- add proper icon for fabric mod menu
 
 ### Version 1.20.4 - 1.1.1
 
