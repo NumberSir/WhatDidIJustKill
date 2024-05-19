@@ -55,7 +55,7 @@ jobs:
       version-range: ${{ needs.prepare.outputs.version-range }}
       forge: ${{ contains(github.event.release.name, '[RELEASE]') }}
       fabric: ${{ contains(github.event.release.name, '[RELEASE]') }}
-      neoforge: ${{ contains(github.event.release.name, '[RELEASE]') }}
+      neoforge: false
 
   send-discord:
     needs: [ "prepare", "build-release" ]
@@ -69,7 +69,7 @@ jobs:
       color: 4739930
       content: "${{ contains(github.event.release.name, '[RELEASE]') && '<@&1241816090909081662>' || ''}}"
       title: "New version for WhatDidIJustKill just released :exclamation:"
-      description: "${{ contains(github.event.release.name, '[RELEASE]') && 'The update is available for *Forge*, *Fabric* and *NeoForge*' || 'The update will *not* be released to Curseforge or Modrinth'}}"
+      description: "${{ contains(github.event.release.name, '[RELEASE]') && 'The update is available for *Forge* and *Fabric*' || 'The update will *not* be released to Curseforge or Modrinth'}}"
       curseforge: "https://www.curseforge.com/minecraft/mc-mods/what-did-i-just-kill"
       modrinth: "https://modrinth.com/mod/what-did-i-just-kill"
       github: "${{ github.event.release.html_url }}"
