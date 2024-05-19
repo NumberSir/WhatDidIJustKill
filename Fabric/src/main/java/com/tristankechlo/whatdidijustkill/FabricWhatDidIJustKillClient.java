@@ -3,6 +3,8 @@ package com.tristankechlo.whatdidijustkill;
 import com.tristankechlo.whatdidijustkill.client.ToastHandler;
 import com.tristankechlo.whatdidijustkill.config.ConfigManager;
 import com.tristankechlo.whatdidijustkill.fabric_command.FabricWhatDidIJustKillCommand;
+import com.tristankechlo.whatdidijustkill.network.ClientBoundEntityKilledPacket;
+import com.tristankechlo.whatdidijustkill.network.ClientBoundPlayerKilledPacket;
 import com.tristankechlo.whatdidijustkill.network.FabricPacketHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -27,8 +29,8 @@ public class FabricWhatDidIJustKillClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(FabricWhatDidIJustKillClient::keyBindingListener);
 
         // register packet listener
-        ClientPlayNetworking.registerGlobalReceiver(WhatDidIJustKill.ENTITY_KILLED, FabricPacketHandler::handleEntityKilled);
-        ClientPlayNetworking.registerGlobalReceiver(WhatDidIJustKill.PLAYER_KILLED, FabricPacketHandler::handlePlayerKilled);
+        ClientPlayNetworking.registerGlobalReceiver(ClientBoundEntityKilledPacket.TYPE, FabricPacketHandler::handleEntityKilled);
+        ClientPlayNetworking.registerGlobalReceiver(ClientBoundPlayerKilledPacket.TYPE, FabricPacketHandler::handlePlayerKilled);
 
         // register mod command
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {

@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 1.20.6 - 1.1.1
+
+- port to 1.20.6
+
 ### Version 1.20.4 - 1.1.1
 
 - use kill credit to determine who killed the mob/player

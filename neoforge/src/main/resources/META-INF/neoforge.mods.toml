@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[2,)"
+loaderVersion="${neoforge_loader_range}"
 license="CC BY-NC-ND 4.0"
 showAsResourcePack=false
 
@@ -18,13 +18,13 @@ showAsResourcePack=false
 [[dependencies.whatdidijustkill]]
     modId="neoforge"
     type="required"
-    versionRange = "[20.4,)"
+    versionRange = "${neoforge_range}"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.whatdidijustkill]]
     modId="minecraft"
     type="required"
-    versionRange="[1.20.4,1.21)"
+    versionRange="${version_range}"
     ordering="NONE"
     side="BOTH"

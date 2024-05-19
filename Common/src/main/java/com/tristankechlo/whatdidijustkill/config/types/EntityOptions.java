@@ -6,7 +6,6 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tristankechlo.whatdidijustkill.IPlatformHelper;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 
 import java.util.List;
@@ -17,7 +16,7 @@ public record EntityOptions(ShowToastOption showToast, int timeout, FormatOption
 
     public static final EntityOptions DEFAULT = new EntityOptions(ShowToastOption.NOT_EXCLUDED, 2000, FormatOption.KILLED_DISTANCE, FormatOption.ENTITY_TYPE, ToastTheme.ADVANCEMENT, List.of(Either.left(new ResourceLocation("bat"))));
 
-    public static final Codec<EntityOptions> CODEC = ExtraCodecs.validate(RecordCodecBuilder.create(
+    public static final Codec<EntityOptions> CODEC = RecordCodecBuilder.<EntityOptions>create(
             instance -> instance.group(
                     ShowToastOption.CODEC.fieldOf("show_toast").forGetter(EntityOptions::showToast),
                     Codec.intRange(250, 20000).fieldOf("timeout").forGetter(EntityOptions::timeout),
@@ -26,7 +25,7 @@ public record EntityOptions(ShowToastOption showToast, int timeout, FormatOption
                     ToastTheme.CODEC.fieldOf("theme").forGetter(EntityOptions::theme),
                     Codec.either(ResourceLocation.CODEC, ModWildcard.CODEC).listOf().fieldOf("excludes").forGetter(EntityOptions::excludes)
             ).apply(instance, EntityOptions::new)
-    ), EntityOptions::verify);
+    ).validate(EntityOptions::verify);
 
     private static DataResult<EntityOptions> verify(EntityOptions options) {
         if (options.firstLine() == FormatOption.NONE) {
@@ -72,11 +71,11 @@ public record EntityOptions(ShowToastOption showToast, int timeout, FormatOption
 
     public record ModWildcard(String modid) {
 
-        private static final Codec<ModWildcard> CODEC = ExtraCodecs.validate(RecordCodecBuilder.create(
+        private static final Codec<ModWildcard> CODEC = RecordCodecBuilder.<ModWildcard>create(
                 instance -> instance.group(
                         Codec.STRING.fieldOf("wildcard").forGetter(ModWildcard::modid)
                 ).apply(instance, ModWildcard::new)
-        ), ModWildcard::verify);
+        ).validate(ModWildcard::verify);
 
         private static DataResult<ModWildcard> verify(ModWildcard wildcard) {
             if (!IPlatformHelper.INSTANCE.isModLoaded(wildcard.modid())) {

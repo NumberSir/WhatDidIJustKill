@@ -22,14 +22,14 @@ public class ForgePacketHandler implements IPacketHandler {
     public static void registerPackets() {
         INSTANCE.messageBuilder(ClientBoundEntityKilledPacket.class, 1, NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(ClientBoundEntityKilledPacket::decode)
-                .encoder(ClientBoundEntityKilledPacket::encode)
+                .encoder((msg, buf) -> ClientBoundEntityKilledPacket.encode(buf, msg))
                 // handle packet execution directly on the main thread
                 .consumerMainThread(ForgePacketHandler::handleEntityKilled)
                 .add();
 
         INSTANCE.messageBuilder(ClientBoundPlayerKilledPacket.class, 2, NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(ClientBoundPlayerKilledPacket::decode)
-                .encoder(ClientBoundPlayerKilledPacket::encode)
+                .encoder((msg, buf) -> ClientBoundPlayerKilledPacket.encode(buf, msg))
                 .consumerMainThread(ForgePacketHandler::handlePlayerKilled)
                 .add();
     }
