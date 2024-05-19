@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[44,)"
+loaderVersion = "${forge_loader_range}"
 license = "CC BY-NC-ND 4.0"
 issueTrackerURL="https://github.com/tristankechlo/WhatDidIJustKill/issues"
 #showAsResourcePack=false
@@ -17,13 +17,13 @@ description = '''displays a small toast with information about the mob you just 
 [[dependencies.whatdidijustkill]]
     modId = "forge"
     mandatory = true
-    versionRange = "[44,)"
+    versionRange = "${forge_loader_range}"
     ordering = "NONE"
     side = "BOTH"
 
 [[dependencies.whatdidijustkill]]
     modId = "minecraft"
     mandatory = true
-    versionRange = "[1.19.3,1.20)"
+    versionRange = "${version_range}"
     ordering = "NONE"
     side = "BOTH"
