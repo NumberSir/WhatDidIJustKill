@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 1.18.2 - 1.1.2
+
+- add proper icon for fabric mod menu
+
 ### Version 1.18.2 - 1.1.1
 
 - use kill credit to determine who killed the mob/player
