@@ -21,14 +21,14 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     modImplementation "com.terraformersmc:modmenu:${modmenu_version}"
-    implementation project("::common")
+    implementation project(":common")
 }
 
 loom {
     mixin {
         defaultRefmapName.set("${mod_id}.refmap.json")
     }
-    accessWidenerPath.set(project("::common").file("src/main/resources/${mod_id}.accesswidener"))
+    accessWidenerPath.set(project(":common").file("src/main/resources/${mod_id}.accesswidener"))
 
     runs {
         client {
@@ -47,21 +47,13 @@ loom {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    source(project("::common").sourceSets.main.allSource)
-}
-tasks.withType(Javadoc).configureEach {
-    source(project("::common").sourceSets.main.allJava)
+    source(project(":common").sourceSets.main.allSource)
 }
 
 processResources {
-    from project("::common").sourceSets.main.resources
-    inputs.property "version", project.version
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
+    from project(":common").sourceSets.main.resources
 }
 
 tasks.withType(JavaCompile) {
-    source(project("::common").sourceSets.main.allSource)
+    source(project(":common").sourceSets.main.allSource)
 }

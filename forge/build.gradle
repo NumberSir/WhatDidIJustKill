@@ -28,7 +28,7 @@ minecraft {
             mods {
                 modClientRun {
                     source sourceSets.main
-                    source project("::common").sourceSets.main
+                    source project(":common").sourceSets.main
                 }
             }
         }
@@ -42,7 +42,7 @@ minecraft {
             mods {
                 modServerRun {
                     source sourceSets.main
-                    source project("::common").sourceSets.main
+                    source project(":common").sourceSets.main
                 }
             }
         }
@@ -51,22 +51,16 @@ minecraft {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    compileOnly project("::common")
+    compileOnly project(":common")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
 }
 
 tasks.withType(JavaCompile).configureEach {
-    source(project("::common").sourceSets.main.allSource)
+    source(project(":common").sourceSets.main.allSource)
 }
 
 processResources {
-    from project("::common").sourceSets.main.resources
-    inputs.property "version", project.version
-
-    filesMatching("META-INF/mods.toml") {
-        expand "version": project.version
-    }
-
+    from project(":common").sourceSets.main.resources
     exclude("whatdidijustkill.accesswidener")
 }
 
