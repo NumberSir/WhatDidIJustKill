@@ -11,6 +11,7 @@ subprojects {
     java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
     jar {
+        from rootProject.file('LICENSE')
         manifest {
             attributes([
                     'Specification-Title'     : mod_name,
