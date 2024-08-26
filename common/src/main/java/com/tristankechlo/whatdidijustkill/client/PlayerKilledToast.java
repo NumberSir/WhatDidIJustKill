@@ -20,7 +20,7 @@ import java.util.UUID;
 
 public class PlayerKilledToast extends AbstractEntityToast {
 
-    private static final ResourceLocation UNKNOWN_PLAYER = new ResourceLocation(WhatDidIJustKill.MOD_ID, "textures/player.png");
+    private static final ResourceLocation UNKNOWN_PLAYER = ResourceLocation.fromNamespaceAndPath(WhatDidIJustKill.MOD_ID, "textures/player.png");
     private final ResourceLocation playerTexture;
 
     private PlayerKilledToast(Component firstLine, Component secondLine, ResourceLocation texture) {

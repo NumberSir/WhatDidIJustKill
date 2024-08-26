@@ -13,7 +13,7 @@ import net.minecraftforge.network.SimpleChannel;
 
 public class ForgePacketHandler implements IPacketHandler {
 
-    private static final SimpleChannel INSTANCE = ChannelBuilder.named(new ResourceLocation(WhatDidIJustKill.MOD_ID, "main"))
+    private static final SimpleChannel INSTANCE = ChannelBuilder.named(ResourceLocation.fromNamespaceAndPath(WhatDidIJustKill.MOD_ID, "main"))
             .networkProtocolVersion(1)
             .clientAcceptedVersions((s, i) -> true)
             .serverAcceptedVersions((s, i) -> true)

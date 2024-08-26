@@ -17,7 +17,7 @@ import net.minecraft.world.entity.EntityType;
 
 public class EntityKilledToast extends AbstractEntityToast {
 
-    private static final ResourceLocation UNKNOWN_ENTITY = new ResourceLocation(WhatDidIJustKill.MOD_ID, "textures/entity_unknown.png");
+    private static final ResourceLocation UNKNOWN_ENTITY = ResourceLocation.fromNamespaceAndPath(WhatDidIJustKill.MOD_ID, "textures/entity_unknown.png");
     private final ResourceLocation entityTexture;
 
     private EntityKilledToast(Component firstLine, Component secondLine, ResourceLocation entityType) {
@@ -65,7 +65,7 @@ public class EntityKilledToast extends AbstractEntityToast {
         EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(entityType);
         String category = type.getCategory().getName().toLowerCase();
         String path = String.format("textures/entity_icon/%s/%s.png", category, entityType.getPath());
-        return new ResourceLocation(entityType.getNamespace(), path);
+        return ResourceLocation.fromNamespaceAndPath(entityType.getNamespace(), path);
     }
 
 }

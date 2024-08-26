@@ -14,7 +14,7 @@ import java.util.Optional;
 public record EntityOptions(ShowToastOption showToast, int timeout, FormatOption firstLine, FormatOption secondLine,
                             ToastTheme theme, List<Either<ResourceLocation, ModWildcard>> excludes) {
 
-    public static final EntityOptions DEFAULT = new EntityOptions(ShowToastOption.NOT_EXCLUDED, 2000, FormatOption.KILLED_DISTANCE, FormatOption.ENTITY_TYPE, ToastTheme.ADVANCEMENT, List.of(Either.left(new ResourceLocation("bat"))));
+    public static final EntityOptions DEFAULT = new EntityOptions(ShowToastOption.NOT_EXCLUDED, 2000, FormatOption.KILLED_DISTANCE, FormatOption.ENTITY_TYPE, ToastTheme.ADVANCEMENT, List.of(Either.left(ResourceLocation.withDefaultNamespace("bat"))));
 
     public static final Codec<EntityOptions> CODEC = RecordCodecBuilder.<EntityOptions>create(
             instance -> instance.group(

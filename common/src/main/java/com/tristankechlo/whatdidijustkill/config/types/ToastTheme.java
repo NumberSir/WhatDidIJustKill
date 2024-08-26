@@ -7,9 +7,9 @@ import net.minecraft.util.StringRepresentable;
 
 public enum ToastTheme implements StringRepresentable {
 
-    ADVANCEMENT("ADVANCEMENT", new ResourceLocation("toast/advancement"), ChatFormatting.GRAY, ChatFormatting.DARK_GRAY, ChatFormatting.WHITE),
-    RECIPE("RECIPE", new ResourceLocation("toast/recipe"), ChatFormatting.BLACK, ChatFormatting.DARK_GRAY, ChatFormatting.DARK_GRAY),
-    TUTORIAL("TUTORIAL", new ResourceLocation("toast/tutorial"), ChatFormatting.BLACK, ChatFormatting.DARK_GRAY, ChatFormatting.DARK_GRAY);
+    ADVANCEMENT("ADVANCEMENT", ResourceLocation.withDefaultNamespace("toast/advancement"), ChatFormatting.GRAY, ChatFormatting.DARK_GRAY, ChatFormatting.WHITE),
+    RECIPE("RECIPE", ResourceLocation.withDefaultNamespace("toast/recipe"), ChatFormatting.BLACK, ChatFormatting.DARK_GRAY, ChatFormatting.DARK_GRAY),
+    TUTORIAL("TUTORIAL", ResourceLocation.withDefaultNamespace("toast/tutorial"), ChatFormatting.BLACK, ChatFormatting.DARK_GRAY, ChatFormatting.DARK_GRAY);
 
     public static final Codec<ToastTheme> CODEC = StringRepresentable.fromEnum(ToastTheme::values);
     private final String key;
