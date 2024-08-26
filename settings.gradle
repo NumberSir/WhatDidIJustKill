@@ -21,6 +21,6 @@ plugins {
 }
 
 rootProject.name = 'WhatDidIJustKill'
-include("Common")
-include("Fabric")
-include("Forge")
+include("common")
+include("fabric")
+include("forge")
