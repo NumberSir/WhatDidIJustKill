@@ -12,8 +12,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod(WhatDidIJustKill.MOD_ID)
 public class ForgeWhatDidIJustKill {
 
-    public ForgeWhatDidIJustKill() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    public ForgeWhatDidIJustKill(FMLJavaModLoadingContext context) {
+        IEventBus modEventBus = context.getModEventBus();
         modEventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
