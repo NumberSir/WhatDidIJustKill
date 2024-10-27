@@ -3,6 +3,7 @@
 ### Version 1.21.1 - 1.1.3
 
 - add textures for creakings
+- fix forge crashing on startup
 
 ### Version 1.21.1 - 1.1.2
 
