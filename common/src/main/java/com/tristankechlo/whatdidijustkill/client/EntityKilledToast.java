@@ -6,6 +6,7 @@ import com.tristankechlo.whatdidijustkill.config.types.FormatOption;
 import com.tristankechlo.whatdidijustkill.config.types.ToastTheme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,7 +32,7 @@ public class EntityKilledToast extends AbstractEntityToast {
     @Override
     protected void renderEntityImage(GuiGraphics graphics) {
         // TODO allow textures with different sizes
-        graphics.blit(this.entityTexture, 8, 8, 0, 0, 16, 16, 16, 16);
+        graphics.blit(RenderType::guiTextured, this.entityTexture, 8, 8, 0, 0, 16, 16, 16, 16);
     }
 
     public static EntityKilledToast make(Component entityName, ResourceLocation entityType, double distance) {
@@ -62,7 +63,7 @@ public class EntityKilledToast extends AbstractEntityToast {
     }
 
     private static ResourceLocation makeExpectedLocation(ResourceLocation entityType) {
-        EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(entityType);
+        EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(entityType).orElseThrow().value();
         String category = type.getCategory().getName().toLowerCase();
         String path = String.format("textures/entity_icon/%s/%s.png", category, entityType.getPath());
         return ResourceLocation.fromNamespaceAndPath(entityType.getNamespace(), path);

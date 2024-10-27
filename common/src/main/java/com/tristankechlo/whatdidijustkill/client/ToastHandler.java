@@ -5,7 +5,7 @@ import com.tristankechlo.whatdidijustkill.config.WhatDidIJustKillConfig;
 import com.tristankechlo.whatdidijustkill.config.types.EntityOptions;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.toasts.ToastComponent;
+import net.minecraft.client.gui.components.toasts.ToastManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +21,7 @@ public class ToastHandler {
         MutableComponent start = ResponseHelper.start();
         MutableComponent message = Component.translatable("key.whatdidijustkill.toggle_toasts." + (toastsEnabled ? "enabled" : "disabled"));
         if (instance.player != null) {
-            instance.player.sendSystemMessage(start.append(message.withStyle(ChatFormatting.WHITE)));
+            instance.player.displayClientMessage(start.append(message.withStyle(ChatFormatting.WHITE)), false);
         }
         instance.options.save();
     }
@@ -39,13 +39,13 @@ public class ToastHandler {
             return;
         }
 
-        final ToastComponent toastManager = Minecraft.getInstance().getToasts();
+        final ToastManager toastManager = Minecraft.getInstance().getToastManager();
         toastManager.addToast(EntityKilledToast.make(entityName, entityType, distance));
     }
 
     public static void showToastPlayer(UUID uuid, Component playerName, double distance) {
         if (toastsEnabled && WhatDidIJustKillConfig.get().player().showToast()) {
-            final ToastComponent toastManager = Minecraft.getInstance().getToasts();
+            final ToastManager toastManager = Minecraft.getInstance().getToastManager();
             toastManager.addToast(PlayerKilledToast.make(uuid, playerName, distance));
         }
     }
