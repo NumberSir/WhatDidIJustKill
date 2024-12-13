@@ -13,7 +13,7 @@
         "issues": "https://github.com/tristankechlo/WhatDidIJustKill/issues"
     },
     "license": "CC BY-NC-ND 4.0",
-    "icon": "icon.png",
+    "icon": "pack.png",
     "environment": "*",
     "entrypoints": {
         "main": [

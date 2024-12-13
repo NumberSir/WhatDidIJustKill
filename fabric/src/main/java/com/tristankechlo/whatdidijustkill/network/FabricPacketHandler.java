@@ -1,9 +1,11 @@
 package com.tristankechlo.whatdidijustkill.network;
 
+import com.google.auto.service.AutoService;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerPlayer;
 
+@AutoService(IPacketHandler.class)
 public class FabricPacketHandler implements IPacketHandler {
 
     @Override

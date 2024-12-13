@@ -7,14 +7,15 @@ import com.tristankechlo.whatdidijustkill.config.types.ToastTheme;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+
+import java.util.Optional;
 
 public class EntityKilledToast extends AbstractEntityToast {
 
@@ -53,12 +54,12 @@ public class EntityKilledToast extends AbstractEntityToast {
 
     private static ResourceLocation getTextureLocationSafe(ResourceLocation entityType) {
         ResourceLocation expectedLocation = makeExpectedLocation(entityType);
-        AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(expectedLocation);
-        if (texture != MissingTextureAtlasSprite.getTexture()) {
-            return expectedLocation;
-        } else {
+        Optional<Resource> resource = Minecraft.getInstance().getResourceManager().getResource(expectedLocation);
+        if (resource.isEmpty()) {
             WhatDidIJustKill.LOGGER.warn("Did not find icon for '{}' at '{}' using fallback icon.", entityType, expectedLocation);
             return UNKNOWN_ENTITY;
+        } else {
+            return expectedLocation;
         }
     }
 

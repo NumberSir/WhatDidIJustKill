@@ -1,23 +1,23 @@
 plugins {
     id 'wdijk-loader'
-    id 'net.neoforged.gradle.userdev' version '7.0.165'
+    id 'net.neoforged.gradle.userdev' version '7.0.171'
 }
 
 runs {
-    configureEach {
-        modSource project.sourceSets.main
-    }
     client {
+        modSource project.sourceSets.main
         systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
     }
     server {
+        modSource project.sourceSets.main
         systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         programArgument '--nogui'
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
 dependencies {
     implementation "net.neoforged:neoforge:${neoforge_version}"
+
+    compileOnly group: 'com.google.auto.service', name: 'auto-service', version: auto_service_version
+    annotationProcessor group: 'com.google.auto.service', name: 'auto-service', version: auto_service_version
 }

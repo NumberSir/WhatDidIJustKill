@@ -1,9 +1,11 @@
 package com.tristankechlo.whatdidijustkill;
 
+import com.google.auto.service.AutoService;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;
 
+@AutoService(IPlatformHelper.class)
 public class FabricPlatformHelper implements IPlatformHelper {
 
     @Override

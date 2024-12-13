@@ -1,5 +1,6 @@
 package com.tristankechlo.whatdidijustkill.network;
 
+import com.google.auto.service.AutoService;
 import com.tristankechlo.whatdidijustkill.WhatDidIJustKill;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -7,6 +8,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
+@AutoService(IPacketHandler.class)
 public class NeoforgePacketHandler implements IPacketHandler {
 
     public static void registerPackets(RegisterPayloadHandlersEvent event) {

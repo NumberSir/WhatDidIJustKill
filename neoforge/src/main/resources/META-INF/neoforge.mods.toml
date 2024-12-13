@@ -8,7 +8,7 @@ showAsResourcePack=false
     version="${version}"
     displayName="What Did I Just Kill?"
     displayURL="https://github.com/tristankechlo/WhatDidIJustKill"
-    #logoFile="banner.png"
+    logoFile="pack.png"
     authors="Buecher_wurm"
     description='''displays a small toast with information about the mob you just killed'''
 
