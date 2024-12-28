@@ -1,0 +1,8 @@
+{
+    "screen.whatdidijustkill.killed": "刚才击杀了%s",
+    "screen.whatdidijustkill.killed.distance": "刚才击杀了%s（%s米）",
+    "screen.whatdidijustkill.distance": "距离：%s米",
+    "key.whatdidijustkill.toggle_toasts": "[我刚刚杀了什么] 开关击杀数据可见性",
+    "key.whatdidijustkill.toggle_toasts.enabled": "已启用所有击杀数据",
+    "key.whatdidijustkill.toggle_toasts.disabled": "已禁用所有击杀数据"
+}
